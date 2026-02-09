@@ -23,6 +23,7 @@ In Source 2, the world and its objects are mesh based. This differs from Source 
 - [Source 2 101 - Hammer Crash Course Tutorials](https://www.youtube.com/@EagleOneDevelopmentTeam/videos), by Eagle One Development Team
 - [ReDMooNTV's CS2 Hammer series](https://www.youtube.com/watch?v=UJgoj2-8xkk&list=PLwcbHxIkIB3eRNVnDiwUDkKeECB_tbyKA), by ReDMooNTV
 - [Easter Lee's](https://github.com/EasterLee/easter_prefabs) underwater overlay and other particles.
+- [S2ZE - Map Porting Guide](https://docs.google.com/document/d/1buKzjP-2com9GcXVxCfyRBi6sDiKmzMoVy9RNbYQqIo/edit?tab=t.0)
 
 ## Lighting
 
