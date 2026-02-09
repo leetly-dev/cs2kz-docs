@@ -6,24 +6,12 @@
 
 The aim of this document is to help guide new and experienced mappers towards improving the quality of their CS2KZ maps in preparation for global map approval. Following this guide will provide insight and resolutions to issues that may prevent your map from being approved. This document is written under the assumption that you have previous experience using the Hammer map editor.
 
+
 ## Fundamentals Changes
 
 In Source 2, the world and its objects are mesh based. This differs from Source 1's brush system whereby the world is built with 'blocks'. The new mesh based system offers a far more intuitive approach to building your map however will require some background research if you're coming from Source 1. It is highly recommended that you move towards this new system if you haven't already since many optimisation issues previously manageable within Source 1 will not work the same way and can lead to later visual issues under Source 2's mesh based system.
 
-## Useful assets
 
-- [CS2KZ Mapping API](https://github.com/KZGlobalTeam/cs2kz-metamod/wiki/Mapping-API)
-- [Source2Viewer](https://source2viewer.com/), used for decompiling CSGO and CS2 assets.
-- [Source2.wiki](https://www.source2.wiki/CommunityGuides/installS2Sdk?game=cs2), wiki
-- [Developer.valvesoftware.com](https://developer.valvesoftware.com/wiki/Source_2/Docs), wiki
-- [CS2KZ Mapping](https://github.com/zer0k-z/cs2kz-mapping), launchers by zer0.k
-- [Text .vmat generator](https://jakkekz.github.io/fuk-point_worldtext/), by jakke
-- [CS2 Loading Screen Creator](https://github.com/jakkekz/cs2-loading-screen-stuff), by jakke
-- [Brian Vuksanovich's Youtube Channel](https://www.youtube.com/@brian-vuksanovich/videos)
-- [Source 2 101 - Hammer Crash Course Tutorials](https://www.youtube.com/@EagleOneDevelopmentTeam/videos), by Eagle One Development Team
-- [ReDMooNTV's CS2 Hammer series](https://www.youtube.com/watch?v=UJgoj2-8xkk&list=PLwcbHxIkIB3eRNVnDiwUDkKeECB_tbyKA), by ReDMooNTV
-- [Easter Lee's](https://github.com/EasterLee/easter_prefabs) underwater overlay and other particles.
-- [S2ZE - Map Porting Guide](https://docs.google.com/document/d/1buKzjP-2com9GcXVxCfyRBi6sDiKmzMoVy9RNbYQqIo/edit?tab=t.0)
 
 ## Lighting
 
@@ -35,11 +23,11 @@ In shaded areas of your map, it may be necessary to incorporate a secondary ligh
 
 <div style="display: flex; gap: 5px;">
   <div style="flex: 1;">
-    <img src="/badlight.jpg" alt="Bad lightning" style="width: 100%; display: block;">
+    <img src="/badlight.jpg" alt="Bad lighting" style="width: 100%; display: block;">
     <p style="text-align: center; margin: 10px 0;"><em>1. Bad lighting</em></p>
   </div>
   <div style="flex: 1;">
-    <img src="/goodlight.jpg" alt="Good lightning" style="width: 100%; display: block;">
+    <img src="/goodlight.jpg" alt="Good lighting" style="width: 100%; display: block;">
     <p style="text-align: center; margin: 10px 0;"><em>2. Good lighting</em></p>
   </div>
 </div>
@@ -60,7 +48,7 @@ With this in mind you also want to avoid calculating lighting for areas of the m
 [Counter-Strike 2 Hammer - Basic Map Optimisations (compile time)](https://youtu.be/VGxPXnGJ0wM?si=XKQLfUU9U4Ijs_fJ&t=135), by ReDMooNTV
 
 ### Light probes and cubemaps
-Light probes and cubemaps are required for your map and can be incorporated simultaneously with the env_combined_light_probe_volume entity. Light probes are required to create diffuse lighting on entities which cannot utilise direct lighting such as prop_dynamic entities. Cubemaps are required to create proper reflections for material surfaces and your view model. This is achieved by projecting a three dimensional image of a room onto the surfaces within the bounds of the entity.
+Light probes and cubemaps are required for your map and can be incorporated simultaneously with the `env_combined_light_probe_volume` entity. Light probes are required to create diffuse lighting on entities which cannot utilise direct lighting such as prop_dynamic entities. Cubemaps are required to create proper reflections for material surfaces and your view model (Image 4 & 6). This is achieved by projecting a three dimensional image of a room onto the surfaces within the bounds of the entity.
 
 <div style="display: flex; gap: 15px;">
   <div style="flex: 1;">
@@ -77,11 +65,12 @@ Light probes and cubemaps are required for your map and can be incorporated simu
   </div>
 </div>
 
-To properly implement an env_combined_light_probe_volume, the entity origin should be placed at the center of a room and at the head height of the player. If the room has multiple elevations, the entity origin can be placed in the middle. The entity origin can be moved with the pivot manipulation tool. If an object is obstructing the light probe, ensure that the origin is not placed within or halfway through that object. After finding a suitable location for the origin of the entity the bounds should be extruded to encapsulate the entirety of the room.
+To implement lightprobes and cubemaps you should aim to place an `env_combined_light_probe_volume` in every room of your map. The origins of these entities should be positioned in the center of each room at player head height. You may need to adjust the position of the origin using the pivot manipulation tool (ins key). For example if the room has multiple elevations, raising the entity origin to a height between the floor and the ceiling may create more accurate reflections. If an object is obstructing the light probe, ensure that the origin is not placed within or halfway through that object. After determining the location for the origin of the entity, the bounds should be extruded to encapsulate the entirety of the room. Recompile and you should now see reflections on your weapon models and the surfaces of your map.
 
-Visible seams occur where light probe volumes meet. To hide these, use an edge fade value of 8 or 16 for most areas, or 32 for larger transitions. When applying a fade, ensure the volume edges overlap by twice the fade distance to maintain a smooth blend.
 
-When placing combined light probes near walls, floors, or ceilings, extend the volume so the edge fade overlaps the surface. If the fade ends exactly at the wall, the lighting influence drops to zero, and the surface won't receive proper reflections or bounce light as seen in image 5.
+In some instances a seam will appear between two volumes due to a difference between the lighting of each room. To soften the transition between the volumes, within the object properties assign an edge fade distance of 8 or 16 units (Image 2). When applying edge fade, ensure the volume edges overlap by twice the distance of your edge fade distance to maintain a smooth blend.  
+
+When placing combined light probes near walls, floors, or ceilings, extend the volume so the edge fade overlaps the surface. If the fade ends exactly at the wall, the lighting influence drops to zero, and the surface won't receive proper reflections or bounce light (image 5).
 
 <div style="text-align: center;">
   <img src="/lightprobe.png" alt="Artifacting" style="max-width: 600px; display: block; margin: 0 auto;">
@@ -99,7 +88,10 @@ When placing combined light probes near walls, floors, or ceilings, extend the v
   </div> 
 </div>
 
-Irregularly shaped rooms often force light probe volumes to overlap in awkward areas, such as through walls into adjacent spaces. This creates messy transitions where surfaces sample the wrong light probes. To fix this, use the priority system to 'force' the correct probe to take over in those overlap zones. Usually, you’ll want the probe that best fits the specific room's shape or lighting to have the higher priority.
+Irregularly shaped rooms often force light probe volumes to overlap awkwardly through walls into adjacent spaces. This will occasionally cause surfaces to sample the wrong light probes. To fix this use the priority system to 'force' the correct probe to take precedent (Image 11). Usually, you’ll want the probe that best fits the specific room's shape or lighting to have the higher priority. 
+
+> [!NOTE]
+When two or more volumes are set to the same priority, the engine will determine the priority based on the hierachy of the entity id.
 
 <div style="text-align: center;">
   <img src="/probepuzzle.png" alt="Probepuzzle" style="max-width: 600px; display: block; margin: 0 auto;">
@@ -416,7 +408,7 @@ The particle editor has to be enabled manually, follow [this](https://developer.
 
   - Most noticeable in darker areas.
 
-  - Disable “emissive lightning” and use postprocessing bloom and light entities.
+  - Disable “emissive lighting” and use postprocessing bloom and light entities.
 
 <div style="text-align: center;">
   <img src="/emissivefail.png" alt="Emissive fail" style="max-width: 400px; display: block; margin: 0 auto;">
@@ -502,3 +494,18 @@ The particle editor has to be enabled manually, follow [this](https://developer.
   <img src="/instaces.gif" alt="Instances" style="max-width: 400px; display: block; margin: 0 auto;">
   <p style="margin: 10px 0;"><em>13. Ladder group instance.</em></p>
 </div>
+
+## Useful Resources
+
+- [CS2KZ Mapping](https://github.com/zer0k-z/cs2kz-mapping): Scripts for setting up and launching Hammer with CS2KZ plugin made by zer0.k
+- [CS2KZ Mapping API](https://github.com/KZGlobalTeam/cs2kz-metamod/wiki/Mapping-API): Documentation for CS2KZ mapping api.
+- [Source2Viewer](https://source2viewer.com/): Tool for decompiling CSGO and CS2 assets from vpk packages.
+- [Valve Developer Community](https://developer.valvesoftware.com/wiki/Source_2/Docs): Official Source Engine wiki.
+- [Source2 Wiki](https://www.source2.wiki/CommunityGuides/installS2Sdk?game=cs2): Community wiki for S2 made by Angel, DoctorGurke and others.
+- [Text .vmat generator](https://jakkekz.github.io/fuk-point_worldtext/): Tool for generating custom text textures and overlays made by jakke
+- [CS2 Loading Screen Creator](https://github.com/jakkekz/cs2-loading-screen-stuff): Tool for creating map loading screen images made by jakke
+- [Eagle One Development Team Youtube Channel](https://www.youtube.com/@eagleonedevelopmentteam849/videos), Various tutorials covering the fundamentals of the Source 2 Hammer editor.
+- [Brian Vuksanovich's Youtube Channel](https://www.youtube.com/@brian-vuksanovich/videos): Various tutorials covering more niche features of Source 2.
+- [ReDMooNTV's CS2 Hammer series](https://www.youtube.com/watch?v=UJgoj2-8xkk&list=PLwcbHxIkIB3eRNVnDiwUDkKeECB_tbyKA), Various tutorials for Source 2 hammer by ReDMooNTV
+- [Easter Lee's](https://github.com/EasterLee/easter_prefabs) underwater overlay and other particles.
+- [S2ZE - Map Porting Guide](https://docs.google.com/document/d/1buKzjP-2com9GcXVxCfyRBi6sDiKmzMoVy9RNbYQqIo/edit?tab=t.0)
