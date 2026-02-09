@@ -65,7 +65,7 @@ Light probes and cubemaps are required for your map and can be incorporated simu
   </div>
 </div>
 
-To properly implement an env_combined_light_probe_volume, the entity origin should be placed at the center of a room and at the head height of the player. If the room has multiple elevations, the entity origin can be placed in the middle. The entity origin can be moved with the pivot manipulation tool. If an object is obstructing the cubemap ensure that the origin is not placed within or halfway through that object. After finding a suitable location for the origin of the entity the bounds should be extruded to encapsulate the entirety of the room.
+To properly implement an env_combined_light_probe_volume, the entity origin should be placed at the center of a room and at the head height of the player. If the room has multiple elevations, the entity origin can be placed in the middle. The entity origin can be moved with the pivot manipulation tool. If an object is obstructing the light probe, ensure that the origin is not placed within or halfway through that object. After finding a suitable location for the origin of the entity the bounds should be extruded to encapsulate the entirety of the room.
 
 Visible seams occur where light probe volumes meet. To hide these, use an edge fade value of 8 or 16 for most areas, or 32 for larger transitions. When applying a fade, ensure the volume edges overlap by twice the fade distance to maintain a smooth blend.
 
@@ -73,26 +73,31 @@ When placing combined light probes near walls, floors, or ceilings, extend the v
 
 <div style="text-align: center;">
   <img src="/lightprobe.png" alt="Artifacting" style="max-width: 600px; display: block; margin: 0 auto;">
-  <p style="margin: 10px 0;"><em>The combined light probe encapsulating the room with edge fade</em></p>
+  <p style="margin: 10px 0;"><em>7. Combined light probe encapsulating the room with edge fade</em></p>
 </div>
 
 <div style="display: flex; gap: 15px;">
   <div style="flex: 1;">
     <img src="/nofade.gif" alt="Fade" style="width: 100%; display: block;">
-    <p style="text-align: center; margin: 10px 0;"><em>Combined light probe without fade or overlap</em></p>
+    <p style="text-align: center; margin: 10px 0;"><em>8. Combined light probe without fade or overlap</em></p>
   </div>
   <div style="flex: 1;">
     <img src="/yesfade.gif" alt="No fade" style="width: 100%; display: block;">
-    <p style="text-align: center; margin: 10px 0;"><em>Combined light probe with fade and overlap</em></p>
+    <p style="text-align: center; margin: 10px 0;"><em>9. Combined light probe with fade and overlap</em></p>
   </div> 
 </div>
 
-Irregularly shaped rooms often force light probe volumes to overlap in awkward areas, such as through walls into adjacent spaces. This creates messy transitions where surfaces sample the wrong cubemaps. To fix this, use the Priority system to 'force' the correct probe to take over in those overlap zones. Usually, you’ll want the probe that best fits the specific room's shape or lighting to have the higher priority.
+Irregularly shaped rooms often force light probe volumes to overlap in awkward areas, such as through walls into adjacent spaces. This creates messy transitions where surfaces sample the wrong light probes. To fix this, use the priority system to 'force' the correct probe to take over in those overlap zones. Usually, you’ll want the probe that best fits the specific room's shape or lighting to have the higher priority.
 
 <div style="text-align: center;">
   <img src="/probepuzzle.png" alt="Probepuzzle" style="max-width: 600px; display: block; margin: 0 auto;">
-  <p style="margin: 10px 0;"><em>A combined light probe "puzzle" with priorities mentioned</em></p>
+  <p style="margin: 10px 0;"><em>10. A combined light probe "puzzle" with priorities mentioned</em></p>
 </div>
+
+<div style="text-align: center;">
+  <img src="/fadeprio.png" alt="FadeAndPriority" style="max-width: 600px; display: block; margin: 0 auto;">
+  <p style="margin: 10px 0;"><em>11. Combined light probe with fade and priority</em></p>
+</div> 
 
 ## Texturing
 
@@ -163,7 +168,7 @@ Well because faces tend to glitch out when viewed from further away, this doesn�
 
 <div style="text-align: center;">
   <img src="/overlayface.gif" alt="OverlayVsFace" style="max-width: 600px; display: block; margin: 0 auto;">
-  <p style="margin: 10px 0;"><em>Overlay and simple face comparison</em></p>
+  <p style="margin: 10px 0;"><em>12. Overlay and face comparison</em></p>
 </div>
 
 - `Sky` shader
