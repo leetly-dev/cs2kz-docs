@@ -7,17 +7,38 @@
 The aim of this document is to help guide new and experienced mappers towards improving the quality of their CS2KZ maps in preparation for global map approval. Following this guide will provide insight and resolutions to issues that may prevent your map from being approved. This document is written under the assumption that you have previous experience using the Hammer map editor.
 
 
-## Fundamentals Changes
+## Meshes
 
-In Source 2, the world and its objects are mesh based. This differs from Source 1's brush system whereby the world is built with 'blocks'. The new mesh based system offers a far more intuitive approach to building your map however will require some background research if you're coming from Source 1. It is highly recommended that you move towards this new system if you haven't already since many optimisation issues previously manageable within Source 1 will not work the same way and can lead to later visual issues under Source 2's mesh based system.
+In Source 2, the world and its objects are ``mesh`` based. This differs from Source 1's brush system whereby the world is built with "blocks". The new mesh based system offers a far more intuitive approach to building your map however will require some background research if you're coming from Source 1. It is highly recommended that you move towards this new system if you haven't already since many optimisation issues previously manageable within Source 1 will not work the same way and can lead to later visual issues under Source 2's mesh based system.
 
+[Source 2 101 - Hammer Crash Course #1 : Good workflow habits](https://www.youtube.com/watch?v=pdSDojRatHw), by Eagle One Development Team
 
+[Counter-Strike 2 Hammer - Wall niches / doors / windows / tunnels](https://www.youtube.com/watch?v=Bo1LwsCqp_M), by ReDMooNTV
+
+## Design/Detailing
+
+To secure a spot in the ``Global Map pool``, your map requires more than just functional gameplay. It needs a level of visual polish that goes beyond the basics. Maps that consist of "box rooms" with flat textures tiled across large surfaces are typically rejected, as they lack the effort and environmental depth expected for global standards.
+
+Break up massive, flat walls by introducing architectural geometry that disrupts the room's silhouette. Adding structural elements like pillars, recessed wall panels, or trim where surfaces meet creates natural highlights and shadows, transforming a hollow shell into an intentional space.
+
+Stay away from the "jumps along a wall" design where players simply follow a linear path through a boxy corridor. Instead, utilize the full 3D volume of your room to force changes in elevation and direction. Integrate your platforms into the environment itself—rather than using generic floating blocks, have players navigate across protruding vents, hanging machinery, or natural rock formations. This grounds the gameplay in a cohesive setting and ensures the map feels like a complete world rather than a simple test room.
+
+<div style="display: flex; gap: 5px;">
+  <div style="flex: 1;">
+    <img src="/insomniano.jpg" alt="Barren kz_insomnia" style="width: 100%; display: block;">
+    <p style="text-align: center; margin: 10px 0;"><em>1. Barren kz_insomnia</em></p>
+  </div>
+  <div style="flex: 1;">
+    <img src="/insomniayes.jpg" alt="Detailed kz_insomnia" style="width: 100%; display: block;">
+    <p style="text-align: center; margin: 10px 0;"><em>2. Detailed kz_insomnia</em></p>
+  </div>
+</div>
 
 ## Lighting
 
 Lighting helps to build an atmospheric and immersive world, it also plays a major role in the readability of your map. While the context changes from map to map, generally speaking this means that your lighting should strike a balance between being visually appealing and readable for gameplay. 
 
-light_environment for sunlight will in most cases provide adequate lighting, however it's worth trying different angles, brightness and colour for the light to see what looks the best.
+`light_environment` for sunlight will in most cases provide adequate lighting, however it's worth trying different angles, brightness and colour for the light to see what looks the best.
 
 In shaded areas of your map, it may be necessary to incorporate a secondary light source to provide better visibility, however in doing so, it is recommended that the light is complimented by a source such as a candle or light bulb prop.
 
@@ -34,6 +55,12 @@ In shaded areas of your map, it may be necessary to incorporate a secondary ligh
 
 Adjusting the luminosity/brightness/fade of your lights will help to make your lights more convincing. Only use light ranges higher than 1024 units sparingly as this can negatively impact fps and compile times.
 
+To see an accurate representation of your lighting and shadows while you work, enable the `GPU Reference Path Tracing` option located in the top-right corner of your viewport window. This provides a highly accurate preview of how light bounces and materials will appear in-game, allowing you to fine-tune your atmosphere without needing to run a full compile.
+
+<div style="text-align: center;">
+  <img src="/gpupathtracing.png" alt="GPUPathTracing" style="max-width: 400px; display: block; margin: 0 auto;">
+  <p style="margin: 10px 0;"><em>3. Enabling GPU Path Tracing.</em></p>
+</div>
 
 ### Lightmap Resolution and Lightmap Space
 The lightmap resolution of your map can have a significant impact on the outcome of your map’s lighting. Best practice is to always do a final compile for your map which by default is set to 2048 resolution. Below this resolution you are more likely to encounter lighting artifacts, especially in darker areas of the map. In larger maps with more light space it may be necessary to compile your map at a lightmap resolution higher than 2048.
@@ -68,7 +95,7 @@ Light probes and cubemaps are required for your map and can be incorporated simu
 To implement lightprobes and cubemaps you should aim to place an `env_combined_light_probe_volume` in every room of your map. The origins of these entities should be positioned in the center of each room at player head height. You may need to adjust the position of the origin using the pivot manipulation tool (ins key). For example if the room has multiple elevations, raising the entity origin to a height between the floor and the ceiling may create more accurate reflections. If an object is obstructing the light probe, ensure that the origin is not placed within or halfway through that object. After determining the location for the origin of the entity, the bounds should be extruded to encapsulate the entirety of the room. Recompile and you should now see reflections on your weapon models and the surfaces of your map.
 
 
-In some instances a seam will appear between two volumes due to a difference between the lighting of each room. To soften the transition between the volumes, within the object properties assign an edge fade distance of 8 or 16 units (Image 2). When applying edge fade, ensure the volume edges overlap by twice the distance of your edge fade distance to maintain a smooth blend.  
+In some instances a seam will appear between two volumes due to a difference between the lighting of each room. To soften the transition between the volumes, within the object properties assign an edge fade distance of 8 or 16 units (Image 11). When applying edge fade, ensure the volume edges overlap by twice the distance of your edge fade distance to maintain a smooth blend (Images 8, 9).  
 
 When placing combined light probes near walls, floors, or ceilings, extend the volume so the edge fade overlaps the surface. If the fade ends exactly at the wall, the lighting influence drops to zero, and the surface won't receive proper reflections or bounce light (image 5).
 
@@ -105,6 +132,50 @@ When two or more volumes are set to the same priority, the engine will determine
 
 ## VIS
 
+The primary function of VIS is to determine what is visible to the player from any given position. If an object is a non-vis contributor, the engine will still render everything behind it, which can severely impact performance. To prevent this, structural geometry such as walls, floors and ceilings should be kept as vis contributors.
+
+VIS is calculated during the map's compilation phase and, along with lighting, is one of the most resource-intensive parts of the process. Poor optimization can cause compile times to skyrocket. VIS functions most efficiently with simple "boxes" and straight surfaces, problems arise when you add complex details inside a room. These detailed elements should be set as non-vis contributors.
+
+In technical terms, VIS operates using cubes called voxels. These voxels fill the playable space, "communicating" with one another to determine line-of-sight and visibility.
+
+If these voxels are too large or extend into the "void" (the empty space outside your map's sealed geometry), it will cause a VIS Leak. When a leak occurs, the engine fails to distinguish between the inside and outside of the map, often resulting in the entire world being rendered at once or the compilation process failing entirely. Ensure your outer structural hull is perfectly sealed to keep the voxel calculation contained.
+
+The entity `visibility_hint` allows you to manually control the size of these voxels in specific areas. While using larger voxels can significantly reduce your compile times, you must be careful, if they are too large, they may fail to properly respect your map's boundaries and bleed into the void, resulting in a VIS leak. Larger open maps such as infinite water maps can use higher voxel sizes.
+
+To visualize how the engine is "thinking," you can view these voxels directly in Hammer. Navigate to the Map dropdown menu and select `Load Compiled Vis Data`. This will overlay the voxel grid and vis clusters onto your 3D view, allowing you to identify areas where the density might be too high or where voxels might be bleeding toward the void.
+
+To visualize which objects in your map are currently affecting visibility, click the "Visibility contributors view" button located in the toolbar (see image below).
+
+<div style="text-align: center;">
+  <img src="/viewviscontribs.png" alt="viscontribs" style="max-width: 60px; display: block; margin: 0 auto;">
+  <p style="margin: 10px 0;"><em>11. "Visibility contributors view" button</em></p>
+</div> 
+
+In CS:GO, visibility was managed by converting geometry into `func_detail`. Source 2 follows a similar logic, but the workflow depends on the asset type. While models are non-vis contributors by default, mesh geometry must be manually configured. To prevent a mesh from affecting visibility, you must enable the `Not a Vis Contributor` setting within the mesh's properties.
+
+<div style="text-align: center;">
+  <img src="/nonvis.png" alt="nonvis" style="max-width: 400px; display: block; margin: 0 auto;">
+  <p style="margin: 10px 0;"><em>11. Object properties</em></p>
+</div> 
+
+<div style="display: flex; gap: 15px;">
+  <div style="flex: 1;">
+    <img src="/kuutiovis.jpg" alt="8x MSAA" style="width: 100%; display: block;">
+    <p style="text-align: center; margin: 10px 0;"><em>4. kz_kuutio</em></p>
+  </div>
+  <div style="flex: 1;">
+    <img src="/kuutionovis.jpg" alt="CMAA2" style="width: 100%; display: block;">
+    <p style="text-align: center; margin: 10px 0;"><em>5. kz_kuutio with only vis contributors</em></p>
+  </div> 
+</div>
+
+> [!NOTE]
+>If the geometry is mostly unchanged VIS doesn't need to be recompiled. You know you need to compile VIS if things start glitching in and out of vision.
+
+[Counter-Strike 2 Hammer - Basic Map Optimisations (compile time)](https://www.youtube.com/watch?v=VGxPXnGJ0wM), by ReDMooNTV
+
+[CS2 Mapping Academy #10 - VIS Optimization (Counter Strike 2)](https://www.youtube.com/watch?v=XLT2b0Ej8DM), by Eagle One Development Team
+
 ## Texturing
 
 Similarly to lighting, the textures you choose can create the atmosphere of your map and also impact the gameplay. 
@@ -118,6 +189,8 @@ Opening the variables tab allows you to change the interactive properties of the
 
 > [!NOTE]
 Keep in mind that materials update in real time in game so it's easy to have these side by side to see how it changes.
+
+[Counter-Strike 2 Hammer: Custom Textures / Materials (PNG images)](https://www.youtube.com/watch?v=1T-a3qfN_2c), by ReDMooNTV
 
 ### Useful shaders
 Material shaders are different customizable configurations for materials each with varying properties and functions. Here we have listed some of the more useful ones with tips on how to use them.
@@ -212,79 +285,13 @@ Used for loading screen images. The option A is the only one needed.
 
 Do not use this, it doesn't work properly.
 
+## Models
 
-## Design/Detailing
-
-### Infinite water
-Water setup has changed significantly since CS:GO, largely due to how it interacts with light probes. To get it looking right, keep these points in mind:
-
-- Larger Water Surface: The water area needs to be much larger than in CS:GO. This hides "bad" reflections near the horizon and gives the water’s edge fade more distance to blend out smoothly.
-
-- Light Probe Coverage: Depending on your layout, a single large light probe is usually best. Never let light probe edges sit on top of the water, as the seams are incredibly obvious on reflective surfaces such as water.
-
-- The 20,000 Unit Limit: Always center your water origin on the grid. Water will stop rendering entirely once it reaches 20,000 units from the origin on any side.
-
-- 3D Skybox Transitions: Since the main map renders over the 3D skybox, ensure your main map geometry does not sit within the water's fade range. This prevents the "seam" between the real world and the skybox from becoming visible.
-
-- If your map has a low perspective and players cannot look directly down onto the water, you can get by with only water fade.
-
-- If the reflections from your env_combined_light_probe_volume look messy, identify the specific objects causing the issue. You can disable "Render to Cubemaps" on those individual entities to prevent them from being captured in the reflection, which often cleans up the final look.
-
-### Diving deeper
-
-If your map is tall (for example kz_avalon) the edge between the main map and 3d skybox is going to be noticeable, mostly due to lightprobes and fade.
-
-Workarounds for this includes:
-- Replacing the lightprobes “cubemap texture” with the one from the 3d skybox. 
-- In the 3d skybox map right click your lightprobe and “Write Custom Cubemap…”, then select this .vtex file in the main map's lightprobe.
-If this is done, remember to set this lightprobes priority lower than other, otherwise other lightprobes on the map will bug out.
-
-- Light probe configuration
-  - Light probe “ball” should be roughly on the same height and placement in both of the maps (3d skybox and main). You can move the ball with the “Pivot Manipulation tool”
-  - The lightprobe should be larger than the playable area (for example the skybox in the kz_avalon example.)
-- Water Configuration
-  - Water can only be configured on new/decompiled water materials.
-  - SSR
-    - Right now SSR might be the best solution for reflections on these maps.
-    - Downsides include:
-       - Reflects what the user sees (no undersides or backsides for example)
-      - Things moving off the camera will flicker and get distorted
-    - SSR has a lot of configurable values in the material editor after being enabled.
-  - Water Fade
-    - The idea of water fade is to help with the transition between the main map’s water and the 3d skybox’ water.
-      
-    - These sliders configure the waters fade: 
-
-<div style="text-align: center;">
-  <img src="/waterfade.png" alt="WaterFade" style="max-width: 600px; display: block; margin: 0 auto;">
-  <p style="margin: 10px 0;"><em>13. Water fade sliders</em></p>
-</div>
-
-<div style="text-align: center;">
-  <img src="/avalon.png" alt="Avalon" style="max-width: 600px; display: block; margin: 0 auto;">
-  <p style="margin: 10px 0;"><em>14. kz_avalon setup</em></p>
-</div>
-
-  - Other settings such as reflectance and glossiness can also help with the transition but it makes the water uglier.
-
-  - Fog can help cover the fade but adds a radius of fog which is quite noticeable at higher elevations.
-
-<div style="display: flex; gap: 5px;">
-  <div style="flex: 1;">
-  <img src="/wordwater.png" alt="wordwater" style="max-width: 350px; display: block; margin: 0 auto;">
-  <p style="margin: 10px 0;"><em>15. word's infinite water tutorial, <a href="https://discord.com/channels/452163833973440522/1171813934832046173/1409374472594526319">discord link</a></em></p>
-  </div>
-  <div style="flex: 1;">
-  <img src="/jakkewater.png" alt="jakkewater" style="max-width: 350px; display: block; margin: 0 auto;">
-  <p style="margin: 10px 0;"><em>16. jakke's infinite water template, <a href="https://discord.com/channels/452163833973440522/1171813934832046173/1470094992453402726">discord link</a></em></p>
-  </div>
-</div>
-
-### Particles
+## Particles
 
 The particle editor has to be enabled manually, follow [this](https://developer.valvesoftware.com/wiki/Counter-Strike_2_Workshop_Tools/Particles) tutorial.
 
-### Sounds
+## Sounds
 
 [Encoding txt](https://www.source2.wiki/CommunityGuides/encodingtxt?game=any)
 
@@ -303,11 +310,6 @@ The particle editor has to be enabled manually, follow [this](https://developer.
   - The CS2KZ Mapping API allows maps to communicate directly with the CS2KZ Metamod plugin using specific entity names and inputs in Hammer.
 
 - Major differences between CSGO and CS2 gameplay
-
-    - https://github.com/zer0k-z/cs2-movement-issues
-
-- If enough of the player is underwater and the player is standing on a floor, the player will not be able to jump, unlike CS:GO.
-  - Add ramps/ladders/triggers instead
 
 - Holding space while doing airstrafing movement when the player is on water will let the player accelerate to more than 200u/s (normal water speed) as they cycle between air movement and water movement. This is not possible in CS2, as the player does not pop up in the air at all.
   - Use slide triggers instead.
@@ -471,10 +473,6 @@ The particle editor has to be enabled manually, follow [this](https://developer.
 
 ## Tips and Tricks
 
-1. If the geometry is mostly unchanged VIS doesn't need to be recompiled.
-
-    - You know you need to compile VIS if things start bugging out.
-
 2. Enable "Tabbed Mode" in "Window" to easily swap between .vmap files.
 
 <div style="text-align: center;">
@@ -509,3 +507,68 @@ The particle editor has to be enabled manually, follow [this](https://developer.
 - [ReDMooNTV's CS2 Hammer series](https://www.youtube.com/watch?v=UJgoj2-8xkk&list=PLwcbHxIkIB3eRNVnDiwUDkKeECB_tbyKA), Various tutorials for Source 2 hammer by ReDMooNTV
 - [Easter Lee's](https://github.com/EasterLee/easter_prefabs) underwater overlay and other particles.
 - [S2ZE - Map Porting Guide](https://docs.google.com/document/d/1buKzjP-2com9GcXVxCfyRBi6sDiKmzMoVy9RNbYQqIo/edit?tab=t.0)
+
+## Infinite water
+Water setup has changed significantly since CS:GO, largely due to how it interacts with combined light probes. To get it looking right, keep these points in mind:
+
+- Larger Water Surface: The water area needs to be much larger than in CS:GO. This hides "bad" reflections near the horizon and gives the water’s edge fade more distance to blend out smoothly.
+
+- Light Probe Coverage: Depending on your layout, a single large light probe is usually best. Never let light probe edges sit on top of the water, as the seams are incredibly obvious on reflective surfaces such as water.
+
+- The 20,000 Unit Limit: Always center your water origin on the grid. Water will stop rendering entirely once it reaches 20,000 units from the origin on any side.
+
+- 3D Skybox Transitions: Since the main map renders over the 3D skybox, ensure your main map geometry does not sit within the water's fade range. This prevents the "seam" between the real world and the skybox from becoming visible.
+
+- If your map has a low perspective and players cannot look directly down onto the water, you can get by with only water fade.
+
+- If the reflections from your env_combined_light_probe_volume look messy, identify the specific objects causing the issue. You can disable "Render to Cubemaps" on those individual entities to prevent them from being captured in the reflection, which often cleans up the final look.
+
+### Diving deeper
+
+If your map is tall (for example kz_avalon) the edge between the main map and 3d skybox is going to be noticeable, mostly due to lightprobes and fade.
+
+Workarounds for this includes:
+- Replacing the lightprobes “cubemap texture” with the one from the 3d skybox. 
+- In the 3d skybox map right click your lightprobe and “Write Custom Cubemap…”, then select this .vtex file in the main map's lightprobe.
+If this is done, remember to set this lightprobes priority lower than other, otherwise other lightprobes on the map will bug out.
+
+- Light probe configuration
+  - Light probe “ball” should be roughly on the same height and placement in both of the maps (3d skybox and main). You can move the ball with the “Pivot Manipulation tool”
+  - The lightprobe should be larger than the playable area (for example the skybox in the kz_avalon example.)
+- Water Configuration
+  - Water can only be configured on new/decompiled water materials.
+  - SSR
+    - Right now SSR might be the best solution for reflections on these maps.
+    - Downsides include:
+       - Reflects what the user sees (no undersides or backsides for example)
+      - Things moving off the camera will flicker and get distorted
+    - SSR has a lot of configurable values in the material editor after being enabled.
+  - Water Fade
+    - The idea of water fade is to help with the transition between the main map’s water and the 3d skybox’ water.
+      
+    - These sliders configure the waters fade: 
+
+<div style="text-align: center;">
+  <img src="/waterfade.png" alt="WaterFade" style="max-width: 600px; display: block; margin: 0 auto;">
+  <p style="margin: 10px 0;"><em>13. Water fade sliders</em></p>
+</div>
+
+<div style="text-align: center;">
+  <img src="/avalon.png" alt="Avalon" style="max-width: 600px; display: block; margin: 0 auto;">
+  <p style="margin: 10px 0;"><em>14. kz_avalon setup</em></p>
+</div>
+
+  - Other settings such as reflectance and glossiness can also help with the transition but it makes the water uglier.
+
+  - Fog can help cover the fade but adds a radius of fog which is quite noticeable at higher elevations.
+
+<div style="display: flex; gap: 5px;">
+  <div style="flex: 1;">
+  <img src="/wordwater.png" alt="wordwater" style="max-width: 350px; display: block; margin: 0 auto;">
+  <p style="margin: 10px 0;"><em>15. word's infinite water tutorial, <a href="https://discord.com/channels/452163833973440522/1171813934832046173/1409374472594526319">discord link</a></em></p>
+  </div>
+  <div style="flex: 1;">
+  <img src="/jakkewater.png" alt="jakkewater" style="max-width: 350px; display: block; margin: 0 auto;">
+  <p style="margin: 10px 0;"><em>16. jakke's infinite water template, <a href="https://discord.com/channels/452163833973440522/1171813934832046173/1470094992453402726">discord link</a></em></p>
+  </div>
+</div>
