@@ -11,6 +11,16 @@ The aim of this document is to help guide new and experienced mappers towards im
 
 In Source 2, the world and its objects are ``mesh`` based. This differs from Source 1's brush system whereby the world is built with "blocks". The new mesh based system offers a far more intuitive approach to building your map however will require some background research if you're coming from Source 1. It is highly recommended that you move towards this new system if you haven't already since many optimisation issues previously manageable within Source 1 will not work the same way and can lead to later visual issues under Source 2's mesh based system.
 
+> [!WARNING]
+> During mesh work you might encounter red edges. This means you have bad faces.
+>
+>Right click a face nearby and "Remove Bad Faces".
+
+<div style="text-align: center;">
+  <img src="/badfaces.png" alt="Bad faces" style="max-width: 400px; display: block; margin: 0 auto;">
+  <p style="margin: 10px 0;"><em>1. Bad faces caused by improper mesh work.</em></p>
+</div>
+
 [Source 2 101 - Hammer Crash Course #1 : Good workflow habits](https://www.youtube.com/watch?v=pdSDojRatHw), by Eagle One Development Team
 
 [Counter-Strike 2 Hammer - Wall niches / doors / windows / tunnels](https://www.youtube.com/watch?v=Bo1LwsCqp_M), by ReDMooNTV
@@ -26,11 +36,11 @@ Stay away from the "jumps along a wall" design where players simply follow a lin
 <div style="display: flex; gap: 5px;">
   <div style="flex: 1;">
     <img src="/insomniano.jpg" alt="Barren kz_insomnia" style="width: 100%; display: block;">
-    <p style="text-align: center; margin: 10px 0;"><em>1. Barren kz_insomnia</em></p>
+    <p style="text-align: center; margin: 10px 0;"><em>2. Barren kz_insomnia</em></p>
   </div>
   <div style="flex: 1;">
     <img src="/insomniayes.jpg" alt="Detailed kz_insomnia" style="width: 100%; display: block;">
-    <p style="text-align: center; margin: 10px 0;"><em>2. Detailed kz_insomnia</em></p>
+    <p style="text-align: center; margin: 10px 0;"><em>3. Detailed kz_insomnia</em></p>
   </div>
 </div>
 
@@ -45,11 +55,11 @@ In shaded areas of your map, it may be necessary to incorporate a secondary ligh
 <div style="display: flex; gap: 5px;">
   <div style="flex: 1;">
     <img src="/badlight.jpg" alt="Bad lighting" style="width: 100%; display: block;">
-    <p style="text-align: center; margin: 10px 0;"><em>1. Bad lighting</em></p>
+    <p style="text-align: center; margin: 10px 0;"><em>4. Bad lighting</em></p>
   </div>
   <div style="flex: 1;">
     <img src="/goodlight.jpg" alt="Good lighting" style="width: 100%; display: block;">
-    <p style="text-align: center; margin: 10px 0;"><em>2. Good lighting</em></p>
+    <p style="text-align: center; margin: 10px 0;"><em>5. Good lighting</em></p>
   </div>
 </div>
 
@@ -59,18 +69,39 @@ To see an accurate representation of your lighting and shadows while you work, e
 
 <div style="text-align: center;">
   <img src="/gpupathtracing.png" alt="GPUPathTracing" style="max-width: 400px; display: block; margin: 0 auto;">
-  <p style="margin: 10px 0;"><em>3. Enabling GPU Path Tracing.</em></p>
+  <p style="margin: 10px 0;"><em>6. Enabling GPU Path Tracing.</em></p>
 </div>
+
+> [!WARNING]
+> (mostly) Non merged edges can shine/bleed light through non-existent gaps.
+> 
+> Shadow bleed is also a thing to keep in mind.
+
+<div style="text-align: center;">
+  <img src="/lightbleed.png" alt="Light bleed" style="max-width: 400px; display: block; margin: 0 auto;">
+  <p style="margin: 10px 0;"><em>7. Light bleed caused by unknown factor.</em></p>
+</div>
+
 
 ### Lightmap Resolution and Lightmap Space
 The lightmap resolution of your map can have a significant impact on the outcome of your map’s lighting. Best practice is to always do a final compile for your map which by default is set to 2048 resolution. Below this resolution you are more likely to encounter lighting artifacts, especially in darker areas of the map. In larger maps with more light space it may be necessary to compile your map at a lightmap resolution higher than 2048.
 
 <div style="text-align: center;">
   <img src="/lightartifacting.jpg" alt="Artifacting" style="max-width: 600px; display: block; margin: 0 auto;">
-  <p style="margin: 10px 0;"><em>3. Lighting artifacts due to low lightmap resolution</em></p>
+  <p style="margin: 10px 0;"><em>8. Lighting artifacts due to low lightmap resolution</em></p>
 </div>
 
 With this in mind you also want to avoid calculating lighting for areas of the map never visible to the player. The first step in achieving this is to cull lightmap space from your map by deleting unnecessary faces. Any face that will never be visible to the player should be deleted (assuming it is not contributing to vis). The second step is to incorporate a lightmap playerspace mesh. This is a brush material which tells the engine where to calculate high resolution lightmap space and will tell the engine where lightmap space should be prioritised.
+
+> [!WARNING]
+>- Visible edges/lines on a surface.
+>
+>- Especially common on lower light resolution compiles with simple surface materials
+
+<div style="text-align: center;">
+  <img src="/lines.png" alt="VisibleEdges" style="max-width: 400px; display: block; margin: 0 auto;">
+  <p style="margin: 10px 0;"><em>9. Edge on a surface clearly visible.</em></p>
+</div>
 
 [Counter-Strike 2 Hammer - Basic Map Optimisations (compile time)](https://youtu.be/VGxPXnGJ0wM?si=XKQLfUU9U4Ijs_fJ&t=135), by ReDMooNTV
 
@@ -80,15 +111,15 @@ Light probes and cubemaps are required for your map and can be incorporated simu
 <div style="display: flex; gap: 15px;">
   <div style="flex: 1;">
     <img src="/noprobe.jpg" alt="Present light probe" style="width: 100%; display: block;">
-    <p style="text-align: center; margin: 10px 0;"><em>4. Combined light probe absent</em></p>
+    <p style="text-align: center; margin: 10px 0;"><em>10. Combined light probe absent</em></p>
   </div>
   <div style="flex: 1;">
     <img src="/almostprobe.jpg" alt="Absent light probe" style="width: 100%; display: block;">
-    <p style="text-align: center; margin: 10px 0;"><em>5. Combined light probe present, but improper edge fade</em></p>
+    <p style="text-align: center; margin: 10px 0;"><em>11. Combined light probe present, but improper edge fade</em></p>
   </div> 
   <div style="flex: 1;">
     <img src="/yesprobe.jpg" alt="Absent light probe" style="width: 100%; display: block;">
-    <p style="text-align: center; margin: 10px 0;"><em>6. Combined light probe present</em></p>
+    <p style="text-align: center; margin: 10px 0;"><em>12. Combined light probe present</em></p>
   </div>
 </div>
 
@@ -101,34 +132,48 @@ When placing combined light probes near walls, floors, or ceilings, extend the v
 
 <div style="text-align: center;">
   <img src="/lightprobe.png" alt="Artifacting" style="max-width: 600px; display: block; margin: 0 auto;">
-  <p style="margin: 10px 0;"><em>7. Combined light probe encapsulating the room with edge fade</em></p>
+  <p style="margin: 10px 0;"><em>13. Combined light probe encapsulating the room with edge fade</em></p>
 </div>
 
 <div style="display: flex; gap: 15px;">
   <div style="flex: 1;">
     <img src="/nofade.gif" alt="Fade" style="width: 100%; display: block;">
-    <p style="text-align: center; margin: 10px 0;"><em>8. Combined light probe without fade or overlap</em></p>
+    <p style="text-align: center; margin: 10px 0;"><em>14. Combined light probe without fade or overlap</em></p>
   </div>
   <div style="flex: 1;">
     <img src="/yesfade.gif" alt="No fade" style="width: 100%; display: block;">
-    <p style="text-align: center; margin: 10px 0;"><em>9. Combined light probe with fade and overlap</em></p>
+    <p style="text-align: center; margin: 10px 0;"><em>15. Combined light probe with fade and overlap</em></p>
   </div> 
 </div>
 
 Irregularly shaped rooms often force light probe volumes to overlap awkwardly through walls into adjacent spaces. This will occasionally cause surfaces to sample the wrong light probes. To fix this use the priority system to 'force' the correct probe to take precedent (Image 11). Usually, you’ll want the probe that best fits the specific room's shape or lighting to have the higher priority. 
 
 > [!NOTE]
-When two or more volumes are set to the same priority, the engine will determine the priority based on the hierachy of the entity id.
+> - When two or more volumes are set to the same priority, the engine will determine the priority based on the hierachy of the entity id.
+>
+> - Having multiple env_combined_light_probe_volume entities with custom “cubemap texture” can be buggy. Try changing the priority settings.
+>
+> - If a certain object is causing problematic reflections, the option "Render to Cubemaps" can be disabled in the objects properties.
 
 <div style="text-align: center;">
   <img src="/probepuzzle.png" alt="Probepuzzle" style="max-width: 600px; display: block; margin: 0 auto;">
-  <p style="margin: 10px 0;"><em>10. A combined light probe "puzzle" with priorities mentioned</em></p>
+  <p style="margin: 10px 0;"><em>16. A combined light probe "puzzle" with priorities mentioned</em></p>
 </div>
 
 <div style="text-align: center;">
   <img src="/fadeprio.png" alt="FadeAndPriority" style="max-width: 600px; display: block; margin: 0 auto;">
-  <p style="margin: 10px 0;"><em>11. Combined light probe with fade and priority</em></p>
+  <p style="margin: 10px 0;"><em>17. Combined light probe with fade and priority</em></p>
 </div> 
+
+> [!WARNING]
+>- ``env_combined_light_probe_volume`` can sometimes break.
+>
+> - Try recompiling the map or replacing combined light probes until it works again.
+
+<div style="text-align: center;">
+  <img src="/buglightprobe.png" alt="BuggedLightprobe" style="max-width: 400px; display: block; margin: 0 auto;">
+  <p style="margin: 10px 0;"><em>18. Broken env_combined_light_probe_volume.</em></p>
+</div>
 
 ## VIS
 
@@ -148,29 +193,33 @@ To visualize which objects in your map are currently affecting visibility, click
 
 <div style="text-align: center;">
   <img src="/viewviscontribs.png" alt="viscontribs" style="max-width: 60px; display: block; margin: 0 auto;">
-  <p style="margin: 10px 0;"><em>11. "Visibility contributors view" button</em></p>
+  <p style="margin: 10px 0;"><em>19. "Visibility contributors view" button</em></p>
 </div> 
 
 In CS:GO, visibility was managed by converting geometry into `func_detail`. Source 2 follows a similar logic, but the workflow depends on the asset type. While models are non-vis contributors by default, mesh geometry must be manually configured. To prevent a mesh from affecting visibility, you must enable the `Not a Vis Contributor` setting within the mesh's properties.
 
 <div style="text-align: center;">
   <img src="/nonvis.png" alt="nonvis" style="max-width: 400px; display: block; margin: 0 auto;">
-  <p style="margin: 10px 0;"><em>11. Object properties</em></p>
+  <p style="margin: 10px 0;"><em>20. Object properties</em></p>
 </div> 
 
 <div style="display: flex; gap: 15px;">
   <div style="flex: 1;">
     <img src="/kuutiovis.jpg" alt="8x MSAA" style="width: 100%; display: block;">
-    <p style="text-align: center; margin: 10px 0;"><em>4. kz_kuutio</em></p>
+    <p style="text-align: center; margin: 10px 0;"><em>21. kz_kuutio</em></p>
   </div>
   <div style="flex: 1;">
     <img src="/kuutionovis.jpg" alt="CMAA2" style="width: 100%; display: block;">
-    <p style="text-align: center; margin: 10px 0;"><em>5. kz_kuutio with only vis contributors</em></p>
+    <p style="text-align: center; margin: 10px 0;"><em>22. kz_kuutio with only vis contributors</em></p>
   </div> 
 </div>
 
 > [!NOTE]
 >If the geometry is mostly unchanged VIS doesn't need to be recompiled. You know you need to compile VIS if things start glitching in and out of vision.
+
+> 
+> [!WARNING]
+> Objects can render through toolsskybox, use ``Moondome``. This is caused by broken VIS.
 
 [Counter-Strike 2 Hammer - Basic Map Optimisations (compile time)](https://www.youtube.com/watch?v=VGxPXnGJ0wM), by ReDMooNTV
 
@@ -190,6 +239,11 @@ Opening the variables tab allows you to change the interactive properties of the
 > [!NOTE]
 Keep in mind that materials update in real time in game so it's easy to have these side by side to see how it changes.
 
+> [!WARNING]
+>Improperly packing materials will cause users to crash.
+>
+>This only seems to happen on the workshop version in a non listen server environment.
+
 [Counter-Strike 2 Hammer: Custom Textures / Materials (PNG images)](https://www.youtube.com/watch?v=1T-a3qfN_2c), by ReDMooNTV
 
 ### Useful shaders
@@ -204,7 +258,7 @@ Although only a colour/texture file is required for the shader to function, you 
 
 Coming from Source 1 you may have used the lightmapped generic shader for your generic materials. While this shader is still available in Source 2, it should only be used sparingly as it lacks many of the features and fidelity offered by alternative shaders.
 
-If you’re planning to use a material texture which lacks other PBR layers, you can generate them yourself. For those who want fast results you can quickly generate these layers from a colour texture using [NormalMap Online](https://cpetry.github.io/NormalMap-Online/) or [materialize](https://github.com/maikramer/Materialize).
+If you’re planning to use a material texture which lacks other PBR layers, you can generate them yourself. For those who want fast results you can quickly generate these layers from a colour/diffuse texture using [NormalMap Online](https://cpetry.github.io/NormalMap-Online/) or [Materialize](https://github.com/maikramer/Materialize).
 
 You can also generate the layers manually using an appropriate photo editing software such as Gimp, Photoshop or Blender.
 
@@ -212,7 +266,7 @@ You can also generate the layers manually using an appropriate photo editing sof
 
 The environment blend shader allows you to combine two materials and create smooth transitions between those materials with the texture paint tool.
 
-> [!WARNING]
+> [!NOTE]
 > Explain how it is used in Hammer.
 
 - `Csgo Water Fancy` shader
@@ -235,7 +289,19 @@ With glowing materials it's important to remember that it will cause light artif
 
 To make the glowing material appear as “glowing” (without as many problems) a combination of Post Processing (with bloom) and the use of light entities is recommended. Good light entities for this case could be “light_rect” and “light_omni2” with either a sphere or one of the tubes as a light shape. Remember that less light entities are better than many.
 
-Transparent materials are also done with the Csgo Complex shader. Just tick the “Translucent” box and configure it. For this you will need an alpha mask (ZONE GRADIANT)  (example image).
+> [!WARNING]
+>- Emissive materials can cause light artifacts
+>
+>   - Using emissive materials as your primary light source often results in "noisy" or splotchy light artifacts, especially in dark environments.
+>
+>   - Disable ``Emissive lighting`` and use postprocessing bloom and light entities.
+
+<div style="text-align: center;">
+  <img src="/emissivefail.png" alt="Emissive fail" style="max-width: 400px; display: block; margin: 0 auto;">
+  <p style="margin: 10px 0;"><em>23. Light artifacts caused by an emissive material being the main light source.</em></p>
+</div>
+
+Transparent materials can also be made with the Csgo Complex shader. Just tick the “Translucent” box and configure it. For this you will need an alpha mask.
 
 - `Csgo Static Overlay` shader
 
@@ -247,7 +313,7 @@ Well because faces tend to glitch out when viewed from further away, this doesn�
 
 <div style="text-align: center;">
   <img src="/overlayface.gif" alt="OverlayVsFace" style="max-width: 600px; display: block; margin: 0 auto;">
-  <p style="margin: 10px 0;"><em>12. Overlay and face comparison</em></p>
+  <p style="margin: 10px 0;"><em>24. Overlay and face comparison</em></p>
 </div>
 
 - `Sky` shader
@@ -287,6 +353,10 @@ Do not use this, it doesn't work properly.
 
 ## Models
 
+### Prop_static
+
+### Prop_dynamic
+
 ## Particles
 
 The particle editor has to be enabled manually, follow [this](https://developer.valvesoftware.com/wiki/Counter-Strike_2_Workshop_Tools/Particles) tutorial.
@@ -323,7 +393,7 @@ The particle editor has to be enabled manually, follow [this](https://developer.
   > [!WARNING]Keep in mind slides/surfs/triggers can be used to gain more max speed for a very long bhop.
 
 
-## Issues/bugs
+## Misc. issues/bugs
 
 ### 1. Backface shadows
 
@@ -345,114 +415,41 @@ The particle editor has to be enabled manually, follow [this](https://developer.
 
 <div style="text-align: center;">
   <img src="/blocklight.png" alt="TriggerMesh" style="max-width: 400px; display: block; margin: 0 auto;">
-  <p style="margin: 10px 0;"><em>17. Blocklight shadow fades as the lightmap gets more populated.</em></p>
+  <p style="margin: 10px 0;"><em>25. Blocklight shadow fades as the lightmap gets more populated.</em></p>
 </div>
 
-### 2. Things render through toolsskybox use moondome
+### 2. Slide triggers need to be fat and wide especially on smaller blocks to ensure proper contact? 
 
-- Use moondome
+### 3. Func_brush tends to act weirdly.
 
-### 3. No generic reflections on playermodels/props
-
-- Add proper env_combined_light_probe_volume
-
-### 4. Slide triggers need to be fat and wide especially on smaller blocks to ensure proper contact? 
-
-### 5. (mostly) Non merged edges can shine/bleed light through non-existent gaps.
-
-  - Shadow bleed is also a thing to keep in mind.
-
-<div style="text-align: center;">
-  <img src="/lightbleed.png" alt="Light bleed" style="max-width: 400px; display: block; margin: 0 auto;">
-  <p style="margin: 10px 0;"><em>18. Light bleed caused by unknown factor.</em></p>
-</div>
-
-### 6. Visible edges/lines on a surface.
-  - especially common on lower light resolution compiles with simple surface materials
-
-<div style="text-align: center;">
-  <img src="/lines.png" alt="VisibleEdges" style="max-width: 400px; display: block; margin: 0 auto;">
-  <p style="margin: 10px 0;"><em>19. Edge on a surface clearly visible.</em></p>
-</div>
-
-
-### 7. VIS
-
-### 8. Func_brush tends to act weirdly.
-
-### 9. Trigger physics type needs to be set to “mesh” to not deform if not square.
+### 4. Trigger physics type needs to be set to “mesh” to not deform if not square.
 
 <div style="text-align: center;">
   <img src="/triggermesh.png" alt="TriggerMesh" style="max-width: 400px; display: block; margin: 0 auto;">
-  <p style="margin: 10px 0;"><em>20. L shaped trigger with different physics types</em></p>
+  <p style="margin: 10px 0;"><em>26. L shaped trigger with different physics types</em></p>
 </div>
 
-### 10. Having multiple .vpk packed ends with the user loading into the alphabetically first .vpk.
+### 5. Having multiple .vpk packed ends with the user loading into the alphabetically first .vpk.
 
-### 11. Broken env_combined_light_probe_volume.
-
-  - Try recompiling the map or replacing combined light probes until it works.
+### 6. Purple checkers is often a sign of missing assets.
 
 <div style="text-align: center;">
-  <img src="/buglightprobe.png" alt="BuggedLightprobe" style="max-width: 400px; display: block; margin: 0 auto;">
-  <p style="margin: 10px 0;"><em>21. Broken env_combined_light_probe_volume.</em></p>
+  <img src="/postprocessingbug.gif" alt="Broken post_processing_volume" style="max-width: 400px; display: block; margin: 0 auto;">
+  <p style="margin: 10px 0;"><em>Broken post_processing_volume caused by missing .vpost file.</em></p>
 </div>
 
-### 12. Having multiple env_combined_light_probe_volume entities with custom “cubemap texture” can be buggy.
+### 7. Custom fonts won't be packed into the workshop map.
 
-  - Try changing the priority settings.
-
-### 13. Custom fonts won't be packed into the workshop map.
-
-### 14. 3D Skyboxes need to be recompiled to update in the main map.
-
-### 15. Emissive materials can cause light artifacts
-
-  - Most noticeable in darker areas.
-
-  - Disable “emissive lighting” and use postprocessing bloom and light entities.
-
-<div style="text-align: center;">
-  <img src="/emissivefail.png" alt="Emissive fail" style="max-width: 400px; display: block; margin: 0 auto;">
-  <p style="margin: 10px 0;"><em>13. Light artifacts caused by an emissive material being the main light source.</em></p>
-</div>
-
-### 16. MSAA multisampling options render a line at the horizon of an infinite water 3d skybox illusion.
-
-  - CMAA2 and None work fine.
-
-<div style="display: flex; gap: 15px;">
-  <div style="flex: 1;">
-    <img src="/8xmsaa.png" alt="8x MSAA" style="width: 100%; display: block;">
-    <p style="text-align: center; margin: 10px 0;"><em>4. Infinite water with 8x MSAA setting</em></p>
-  </div>
-  <div style="flex: 1;">
-    <img src="/cmaa2.png" alt="CMAA2" style="width: 100%; display: block;">
-    <p style="text-align: center; margin: 10px 0;"><em>5. Infinite water with CMAA2 setting</em></p>
-  </div> 
-</div>
-
-### 17. During mesh work you might encounter red edges. This means you have bad faces.
-
-  - Right click a face nearby and "Remove Bad Faces".
-
-<div style="text-align: center;">
-  <img src="/badfaces.png" alt="Bad faces" style="max-width: 400px; display: block; margin: 0 auto;">
-  <p style="margin: 10px 0;"><em>13. Bad faces caused by improper mesh work.</em></p>
-</div>
-
-### 18. Improperly packing materials will cause users to crash.
-
-  - This only seems to happen on the workshop version on a non listen server environment.
+### 8. 3D Skyboxes need to be recompiled to update in the main map.
 
 <div style="text-align: center;">
   <img src="/materialerror.png" alt="Material error" style="max-width: 400px; display: block; margin: 0 auto;">
-  <p style="margin: 10px 0;"><em>13. Crashed game caused by missing material.</em></p>
+  <p style="margin: 10px 0;"><em>27. Crashed game caused by missing material.</em></p>
 </div>
 
-### 19. When following online source 2 tutorials, be aware that some methods or entities may not work in the CS2 version of Hammer.
+### 9. When following online source 2 tutorials, be aware that some methods or entities may not work in the CS2 version of Hammer.
 
-  - For example, `volumetric_fog` is unavailable in CS2 but available in Alyx.
+  - For example, `volumetric_fog` is unavailable in CS2 but available in Half-Life: Alyx.
 
 ## Nice to haves
 
@@ -464,7 +461,7 @@ The particle editor has to be enabled manually, follow [this](https://developer.
 
 <div style="text-align: center;">
   <img src="/loadingscreen.png" alt="Loading screen" style="max-width: 400px; display: block; margin: 0 auto;">
-  <p style="margin: 10px 0;"><em>13. Custom loading screen.</em></p>
+  <p style="margin: 10px 0;"><em>28. Custom loading screen.</em></p>
 </div>
 
 [CS2 Loading Screen Creator](https://github.com/jakkekz/cs2-loading-screen-stuff), by jakke
@@ -473,25 +470,28 @@ The particle editor has to be enabled manually, follow [this](https://developer.
 
 ## Tips and Tricks
 
-2. Enable "Tabbed Mode" in "Window" to easily swap between .vmap files.
+1. Enable ``Tabbed Mode`` in "Window" to easily swap between .vmap files.
 
 <div style="text-align: center;">
   <img src="/tabbedmode.png" alt="Tabbed Mode" style="max-width: 400px; display: block; margin: 0 auto;">
-  <p style="margin: 10px 0;"><em>13. Tabbed mode.</em></p>
+  <p style="margin: 10px 0;"><em>29. Tabbed mode.</em></p>
 </div>
 
-3. Use instances
+2. Use ``instances``
 
     - Instances are ideal for repetitive elements or objects that are copy-pasted throughout the map. Using them keeps your project organized and allows you to make global changes to all copies simultaneously by editing a single object.
 
     - To create an instance, select your objects, right-click, and choose "Selected Objects" and "Create Instance" or use the shortcut Ctrl + Shift + G.
 
-      - Instances have to be edited inside the "instance editor"
+      - Instances have to be edited inside the ``instance editor``
 
 <div style="text-align: center;">
   <img src="/instaces.gif" alt="Instances" style="max-width: 400px; display: block; margin: 0 auto;">
-  <p style="margin: 10px 0;"><em>13. Ladder group instance.</em></p>
+  <p style="margin: 10px 0;"><em>30. Ladder group instance.</em></p>
 </div>
+
+  3. ``Group`` objects
+  - Allows you to move multiple objects at once.
 
 ## Useful Resources
 
@@ -572,3 +572,32 @@ If this is done, remember to set this lightprobes priority lower than other, oth
   <p style="margin: 10px 0;"><em>16. jakke's infinite water template, <a href="https://discord.com/channels/452163833973440522/1171813934832046173/1470094992453402726">discord link</a></em></p>
   </div>
 </div>
+
+> [!WARNING]
+>### ``MSAA multisampling`` options render a line at the horizon.
+>
+>  - ``CMAA2`` and ``None`` work fine.
+
+<div style="display: flex; gap: 15px;">
+  <div style="flex: 1;">
+    <img src="/8xmsaa.png" alt="8x MSAA" style="width: 100%; display: block;">
+    <p style="text-align: center; margin: 10px 0;"><em>4. Infinite water with 8x MSAA setting</em></p>
+  </div>
+  <div style="flex: 1;">
+    <img src="/cmaa2.png" alt="CMAA2" style="width: 100%; display: block;">
+    <p style="text-align: center; margin: 10px 0;"><em>5. Infinite water with CMAA2 setting</em></p>
+  </div> 
+</div>
+
+## Gradient Start & End zones
+
+- Download this image and place it inside ``/materials``
+<div style="text-align: center;">
+  <img src="/gradient.png" alt="Gradient" style="max-width: 600px; display: block; margin: 0 auto;">
+  <p style="margin: 10px 0;"><em>13. Gradient</em></p>
+</div>
+
+  - Create a ``Csgo_complex`` shader material with ``Translucent`` enabled.
+    - Add ``gradient.png`` as the translucent layer.
+  - Enable ``Self Illum`` if you want it glowing.
+  - Can be left white in the material editor and color it in the object properties per case use.
