@@ -12,9 +12,9 @@ The aim of this document is to help guide new and experienced mappers towards im
 In Source 2, the world and its objects are ``mesh`` based. This differs from Source 1's brush system whereby the world is built with "blocks". The new mesh based system offers a far more intuitive approach to building your map however will require some background research if you're coming from Source 1. It is highly recommended that you move towards this new system if you haven't already since many optimisation issues previously manageable within Source 1 will not work the same way and can lead to later visual issues under Source 2's mesh based system.
 
 > [!WARNING]
-> During mesh work you might encounter red edges. This means you have bad faces.
+> When working with a mesh work you may encounter red edges. This means you have 'bad' faces.
 >
->Right click a face nearby and "Remove Bad Faces".
+>Right click a nearby face and "Remove Bad Faces" to resolve.
 
 <div style="text-align: center;">
   <img src="/badfaces.png" alt="Bad faces" style="max-width: 400px; display: block; margin: 0 auto;">
@@ -27,11 +27,11 @@ In Source 2, the world and its objects are ``mesh`` based. This differs from Sou
 
 ## Design/Detailing
 
-To secure a spot in the ``Global Map pool``, your map requires more than just functional gameplay. It needs a level of visual polish that goes beyond the basics. Maps that consist of "box rooms" with flat textures tiled across large surfaces are typically rejected, as they lack the effort and environmental depth expected for global standards.
+To secure a spot in the ``Global Map pool``, your map requires functional gameplay and a level of visual polish that goes beyond the basics. Maps that consist of "box rooms" with flat textures tiled across large surfaces are typically rejected, as they lack the environmental depth expected for global standards.
 
-Break up massive, flat walls by introducing architectural geometry that disrupts the room's silhouette. Adding structural elements like pillars, recessed wall panels, or trim where surfaces meet creates natural highlights and shadows, transforming a hollow shell into an intentional space.
+Break up large empty spaces by introducing geometry which disrupts the room's silhouette. Adding structural elements such as pillars, recessed wall panels, or trim where surfaces meet can create natural highlights and shadows, transforming a hollow shell into a lively space.
 
-Stay away from the "jumps along a wall" design where players simply follow a linear path through a boxy corridor. Instead, utilize the full 3D volume of your room to force changes in elevation and direction. Integrate your platforms into the environment itself—rather than using generic floating blocks, have players navigate across protruding vents, hanging machinery, or natural rock formations. This grounds the gameplay in a cohesive setting and ensures the map feels like a complete world rather than a simple test room.
+Avoid employing a "jumps along a wall" design where the player simply follows a linear path through a box corridor. Instead, utilize the full 3D volume of your room to force changes in elevation and direction. Integrate your platforms into the environment itself rather than using generic floating blocks, have players navigate across protruding vents, hanging machinery, or natural rock formations. This grounds the gameplay in a cohesive setting and ensures the map feels like a complete world rather than a simple test room.
 
 <div style="display: flex; gap: 5px;">
   <div style="flex: 1;">
@@ -50,7 +50,7 @@ Lighting helps to build an atmospheric and immersive world, it also plays a majo
 
 `light_environment` for sunlight will in most cases provide adequate lighting, however it's worth trying different angles, brightness and colour for the light to see what looks the best.
 
-In shaded areas of your map, it may be necessary to incorporate a secondary light source to provide better visibility, however in doing so, it is recommended that the light is complimented by a source such as a candle or light bulb prop.
+In shaded areas of your map, it may be necessary to incorporate a secondary light source to provide better visibility, however in doing so, it is recommended that the light is complimented by a source such as a candle or light bulb prop. The `light_omni2` entity is standard for generic light sources. For lamps or floodlights you can create shaped light cones with a `light_barn` entity. To create dynamic lighting effects, within the object properties, set the direct lighting type to 'dynamic' and set a 'style'.
 
 <div style="display: flex; gap: 5px;">
   <div style="flex: 1;">
@@ -65,7 +65,7 @@ In shaded areas of your map, it may be necessary to incorporate a secondary ligh
 
 Adjusting the luminosity/brightness/fade of your lights will help to make your lights more convincing. Only use light ranges higher than 1024 units sparingly as this can negatively impact fps and compile times.
 
-To see an accurate representation of your lighting and shadows while you work, enable the `GPU Reference Path Tracing` option located in the top-right corner of your viewport window. This provides a highly accurate preview of how light bounces and materials will appear in-game, allowing you to fine-tune your atmosphere without needing to run a full compile.
+When testing your lights, changing your 3d view port to `GPU Reference Path Tracing` will provide a real time raytraced preview of the lighting and reflections of your map in Hammer. This will allow you to adjust your lights without compiling your map. With that said, `3d All Lighting` tends to present shadows more accurately.
 
 <div style="text-align: center;">
   <img src="/gpupathtracing.png" alt="GPUPathTracing" style="max-width: 400px; display: block; margin: 0 auto;">
@@ -237,12 +237,12 @@ The list of properties to choose from will vary depending on the shader type you
 Opening the variables tab allows you to change the interactive properties of the material including the sound of footsteps and bullet impacts. Select material type and search through the list of available surfaces until you find an appropriate choice.
 
 > [!NOTE]
-Keep in mind that materials update in real time in game so it's easy to have these side by side to see how it changes.
+Most material properties update in real time. This means you can adjust your material in one window while viewing the result in game from another window.
 
 > [!WARNING]
->Improperly packing materials will cause users to crash.
+>Missing materials now cause users to crash on secure servers. A recent 'safeguard' change from Valve.
 >
->This only seems to happen on the workshop version in a non listen server environment.
+> This usually occurs when you assign a material to a face, then delete that material from your addon folder. This will not crash your client when running a listen server in insecure mode making it easy to miss until your map is tested on a dedicated server. 
 
 [Counter-Strike 2 Hammer: Custom Textures / Materials (PNG images)](https://www.youtube.com/watch?v=1T-a3qfN_2c), by ReDMooNTV
 
@@ -250,26 +250,24 @@ Keep in mind that materials update in real time in game so it's easy to have the
 Material shaders are different customizable configurations for materials each with varying properties and functions. Here we have listed some of the more useful ones with tips on how to use them.
 
 
-- `Csgo Environment` shader
+- `Csgo Environment` 
 
 This shader allows **PBR** layering for generic materials such as wall, floor and terrain surfaces.
 
 Although only a colour/texture file is required for the shader to function, you should aim to generate normal and roughness maps at a minimum to provide your materials with realistic topography and surface reflectivity.
 
-Coming from Source 1 you may have used the lightmapped generic shader for your generic materials. While this shader is still available in Source 2, it should only be used sparingly as it lacks many of the features and fidelity offered by alternative shaders.
-
 If you’re planning to use a material texture which lacks other PBR layers, you can generate them yourself. For those who want fast results you can quickly generate these layers from a colour/diffuse texture using [NormalMap Online](https://cpetry.github.io/NormalMap-Online/) or [Materialize](https://github.com/maikramer/Materialize).
 
 You can also generate the layers manually using an appropriate photo editing software such as Gimp, Photoshop or Blender.
 
-- `Csgo Environment Blend` shader
+- `Csgo Environment Blend` 
 
-The environment blend shader allows you to combine two materials and create smooth transitions between those materials with the texture paint tool.
+The environment blend shader allows you to combine two materials and create smooth transitions between those materials with the texture paint tool. You can also add a wetness layer if you wish to create a blend between a wet and dry surface. To use blend materials, assign the custom blend material to a face, select that face and then change to the `blend painting tool` (shift+V). Within the tool settings, change 'paint on' to selected faces, then on the selected face you can click to paint. If you wish to switch to the alternate material, hold ctrl while painting.
 
 > [!NOTE]
-> Explain how it is used in Hammer.
+Increasing the subdivision on a face will allow finer strokes with the paint tool but may force uneven results for surfaces with complex geometry. As an alternative method, you can manually cut edges on the face to the shapes you desire and with the paint tool `flood fill`.
 
-- `Csgo Water Fancy` shader
+- `Csgo Water Fancy` 
 
 If you don’t plan on adding water to your map you can ignore this shader.
 If you do, it is imperative that you create a custom water material rather than using the stock assets.
@@ -279,7 +277,7 @@ The easiest way to prepare a water material using this shader is to decompile a 
 Most people’s first issue when using stock water is that the surface starts to fade the further it is located from the world origin. To adjust the fade distance, change the UV max and minimum values.
 
 
-- `Csgo Complex` shader
+- `Csgo Complex` 
 
 The Csgo Complex shader offers experimental properties for your materials such as emissive lighting, transparency, animation and movement.
 
@@ -303,7 +301,7 @@ To make the glowing material appear as “glowing” (without as many problems) 
 
 Transparent materials can also be made with the Csgo Complex shader. Just tick the “Translucent” box and configure it. For this you will need an alpha mask.
 
-- `Csgo Static Overlay` shader
+- `Csgo Static Overlay` 
 
 Can be used to project materials onto faces. The best use case for this would be images/art/lj numbers. This shader does also have the translucent option. 
 
@@ -316,40 +314,40 @@ Well because faces tend to glitch out when viewed from further away, this doesn�
   <p style="margin: 10px 0;"><em>24. Overlay and face comparison</em></p>
 </div>
 
-- `Sky` shader
+- `Sky` 
 
 Used for making custom skybox material. The “Sky Texture” can be added in multiple different forms. The preferred and best looking one is as an .exr file with HDR. This will however use the most file size.
 
 The Dxt1 (LDR) option can be used if the skybox image isn't HDR. This option uses less file size. Use this option if your skybox is a simple .png image.
 EXPLAIN WHAT CUBEMAP TEXTURE IS AND HOW TO GET/MAKE THEM
 
-- `Csgo Moondome` shader
+- `Csgo Moondome` 
 
 Moondomes are used because toolsskybox doesn’t work properly and renders things behind it. Moondomes are basically a material shader that acts like a proper skybox material. Keep in mind that it has collision on by default but this can be fixed by changing the “Surface Property” to “Default Silent” from “Default” in the “Attributes” tab. This makes the moondome act like a clip by not leaving gunshot dents but still acting like a wall that can’t be passed.
 
 When making moondomes it’s important to keep in mind that the “Color” setting is set to a grey colour which should be made white to not have the moondome darker than the skybox. Then choose the skybox “Cube Map” texture and you're done.
 
-- `Refract` shader
+- `Refract` 
 
 It's broken as this is being written. Has to be rendered as a model through a “info_particle_system” entity. 
 
 Needs “FidelityFX Super Resolution” video setting disabled to show without visual bugs.
 
-- `Csgo Weapon` shader
+- `Csgo Weapon` 
 
 Can be used to make very interesting materials by enabling the SFX options “Glitter” and “Iridescence”. This shader does in fact work on other surfaces than weapons.
 
-- `Csgo Simple 3layer Parallax` shader
+- `Csgo Simple 3layer Parallax` 
 
 Can be used to make fake rooms and layered materials such as ice. Check out [this](https://www.youtube.com/watch?v=6ZgSIaJoe8g) video to learn more. 
 
-- `Csgo Composite Generic` shader
+- `Csgo Composite Generic` 
 
 Used for loading screen images. The option A is the only one needed.
 
-- `Csgo Lightmappedgeneric` shader
+- `Csgo Lightmappedgeneric` 
 
-Do not use this, it doesn't work properly.
+Coming from Source 1 you may have used the lightmapped generic shader for your generic materials. While this shader is still available in Source 2, it should only be used sparingly as it lacks many of the features and fidelity offered by alternative shaders.
 
 ## Models
 
