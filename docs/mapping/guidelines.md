@@ -106,7 +106,7 @@ With this in mind you also want to avoid calculating lighting for areas of the m
 [Counter-Strike 2 Hammer - Basic Map Optimisations (compile time)](https://youtu.be/VGxPXnGJ0wM?si=XKQLfUU9U4Ijs_fJ&t=135), by ReDMooNTV
 
 ### Light probes and cubemaps
-Light probes and cubemaps are required for your map and can be incorporated simultaneously with the `env_combined_light_probe_volume` entity. Light probes are required to create diffuse lighting on entities which cannot utilise direct lighting such as prop_dynamic entities. Cubemaps are required to create proper reflections for material surfaces and your view model (Image 4 & 6). This is achieved by projecting a three dimensional image of a room onto the surfaces within the bounds of the entity.
+Light probes and cubemaps are required for your map and can be incorporated simultaneously with the `env_combined_light_probe_volume` entity. Light probes are required to create diffuse lighting on entities which cannot utilise direct lighting such as prop_dynamic entities. Cubemaps are required to create proper reflections for material surfaces and your view model (image 4 & 6). This is achieved by projecting a three dimensional image of a room onto the surfaces within the bounds of the entity.
 
 <div style="display: flex; gap: 15px;">
   <div style="flex: 1;">
@@ -126,7 +126,7 @@ Light probes and cubemaps are required for your map and can be incorporated simu
 To implement lightprobes and cubemaps you should aim to place an `env_combined_light_probe_volume` in every room of your map. The origins of these entities should be positioned in the center of each room at player head height. You may need to adjust the position of the origin using the pivot manipulation tool (ins key). For example if the room has multiple elevations, raising the entity origin to a height between the floor and the ceiling may create more accurate reflections. If an object is obstructing the light probe, ensure that the origin is not placed within or halfway through that object. After determining the location for the origin of the entity, the bounds should be extruded to encapsulate the entirety of the room. Recompile and you should now see reflections on your weapon models and the surfaces of your map.
 
 
-In some instances a seam will appear between two volumes due to a difference between the lighting of each room. To soften the transition between the volumes, within the object properties assign an edge fade distance of 8 or 16 units (Image 11). When applying edge fade, ensure the volume edges overlap by twice the distance of your edge fade distance to maintain a smooth blend (Images 8, 9).  
+In some instances a seam will appear between two volumes due to a difference between the lighting of each room. To soften the transition between the volumes, within the object properties assign an edge fade distance of 8 or 16 units (image 11). When applying edge fade, ensure the volume edges overlap by twice the distance of your edge fade distance to maintain a smooth blend (images 8, 9).  
 
 When placing combined light probes near walls, floors, or ceilings, extend the volume so the edge fade overlaps the surface. If the fade ends exactly at the wall, the lighting influence drops to zero, and the surface won't receive proper reflections or bounce light (image 5).
 
@@ -146,7 +146,7 @@ When placing combined light probes near walls, floors, or ceilings, extend the v
   </div> 
 </div>
 
-Irregularly shaped rooms often force light probe volumes to overlap awkwardly through walls into adjacent spaces. This will occasionally cause surfaces to sample the wrong light probes. To fix this use the priority system to 'force' the correct probe to take precedent (Image 11). Usually, you’ll want the probe that best fits the specific room's shape or lighting to have the higher priority. 
+Irregularly shaped rooms often force light probe volumes to overlap awkwardly through walls into adjacent spaces. This will occasionally cause surfaces to sample the wrong light probes. To fix this use the priority system to 'force' the correct probe to take precedent (image 11). Usually, you’ll want the probe that best fits the specific room's shape or lighting to have the higher priority. 
 
 > [!NOTE]
 > - When two or more volumes are set to the same priority, the engine will determine the priority based on the hierachy of the entity id.
@@ -183,7 +183,7 @@ VIS is calculated during the map's compilation phase and, along with lighting, i
 
 In technical terms, VIS operates using cubes called voxels. These voxels fill the playable space, "communicating" with one another to determine line-of-sight and visibility.
 
-If these voxels are too large or extend into the "void" (the empty space outside your map's sealed geometry), it will cause a VIS Leak. When a leak occurs, the engine fails to distinguish between the inside and outside of the map, often resulting in the entire world being rendered at once or the compilation process failing entirely. Ensure your outer structural hull is perfectly sealed to keep the voxel calculation contained.
+If these voxels are too large or extend into the "void" (the empty space outside your map's sealed geometry), it will cause a VIS Leak. When a leak occurs, the engine fails to distinguish between the inside and outside of the map, often resulting in objects rendering when they shouldn't. Ensure your outer structural hull is perfectly sealed to keep the voxel calculation contained.
 
 The entity `visibility_hint` allows you to manually control the size of these voxels in specific areas. While using larger voxels can significantly reduce your compile times, you must be careful, if they are too large, they may fail to properly respect your map's boundaries and bleed into the void, resulting in a VIS leak. Larger open maps such as infinite water maps can use higher voxel sizes.
 
@@ -242,7 +242,12 @@ Most material properties update in real time. This means you can adjust your mat
 > [!WARNING]
 >Missing materials now cause users to crash on secure servers. A recent 'safeguard' change from Valve.
 >
-> This usually occurs when you assign a material to a face, then delete that material from your addon folder. This will not crash your client when running a listen server in insecure mode making it easy to miss until your map is tested on a dedicated server. 
+> This usually occurs when you assign a material to a face, then delete that material from your addon folder or don't place it inside ``/materials``. This will not crash your client when running a listen server in insecure mode making it easy to miss until your map is tested on a dedicated server. 
+
+<div style="text-align: center;">
+  <img src="/materialerror.png" alt="Material error" style="max-width: 400px; display: block; margin: 0 auto;">
+  <p style="margin: 10px 0;"><em>27. Crashed game caused by missing material.</em></p>
+</div>
 
 [Counter-Strike 2 Hammer: Custom Textures / Materials (PNG images)](https://www.youtube.com/watch?v=1T-a3qfN_2c), by ReDMooNTV
 
@@ -349,6 +354,7 @@ Used for loading screen images. The option A is the only one needed.
 
 Coming from Source 1 you may have used the lightmapped generic shader for your generic materials. While this shader is still available in Source 2, it should only be used sparingly as it lacks many of the features and fidelity offered by alternative shaders.
 
+
 ## Models
 
 ### Prop_static
@@ -440,11 +446,6 @@ The particle editor has to be enabled manually, follow [this](https://developer.
 
 ### 8. 3D Skyboxes need to be recompiled to update in the main map.
 
-<div style="text-align: center;">
-  <img src="/materialerror.png" alt="Material error" style="max-width: 400px; display: block; margin: 0 auto;">
-  <p style="margin: 10px 0;"><em>27. Crashed game caused by missing material.</em></p>
-</div>
-
 ### 9. When following online source 2 tutorials, be aware that some methods or entities may not work in the CS2 version of Hammer.
 
   - For example, `volumetric_fog` is unavailable in CS2 but available in Half-Life: Alyx.
@@ -468,14 +469,14 @@ The particle editor has to be enabled manually, follow [this](https://developer.
 
 ## Tips and Tricks
 
-1. Enable ``Tabbed Mode`` in "Window" to easily swap between .vmap files.
+### 1. Enable ``Tabbed Mode`` in "Window" to easily swap between .vmap files.
 
 <div style="text-align: center;">
   <img src="/tabbedmode.png" alt="Tabbed Mode" style="max-width: 400px; display: block; margin: 0 auto;">
   <p style="margin: 10px 0;"><em>29. Tabbed mode.</em></p>
 </div>
 
-2. Use ``instances``
+### 2. Use ``instances``
 
     - Instances are ideal for repetitive elements or objects that are copy-pasted throughout the map. Using them keeps your project organized and allows you to make global changes to all copies simultaneously by editing a single object.
 
@@ -488,8 +489,28 @@ The particle editor has to be enabled manually, follow [this](https://developer.
   <p style="margin: 10px 0;"><em>30. Ladder group instance.</em></p>
 </div>
 
-  3. ``Group`` objects
+ ### 3. ``Group`` objects
   - Allows you to move multiple objects at once.
+
+### 4. Remove ``unused compiled`` assets
+
+* Before publishing a workshop version remove the **compiled** ``/materials`` and maybe ``/models`` folder.
+
+* Then re-open hammer and reload the map.
+
+* This causes hammer to only compile used assets, otherwise it would pack everything ever compiled to the workshop version (even assets not used anymore).
+
+>[!NOTE]
+>Hammer uploads every compiled asset to the workshop version, even unused.
+
+>[!WARNING]
+>* COMPILED FILES ARE FOUND IN THE ``/GAME`` PATH AND **NOT** THE ``/CONTENT`` PATH.
+>
+>* FOR EXAMPLE: ``Counter-Strike Global Offensive\GAME\csgo_addons\kz_insomnia\materials``
+>
+>* **IT IS RECOMMENDED TO BACK UP YOUR ADDONS FOLDER BEFORE TRYING THIS.**
+
+
 
 ## Useful Resources
 
