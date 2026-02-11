@@ -85,7 +85,7 @@ function sidebar(): DefaultTheme.SidebarItem[] {
       text: "Creator resources",
       items: [
         { text: "Map Approval Process", link: "/mapping/approval" },
-        { text: "Mapping Guidelines", link: "/mapping/guidelines" },
+        { text: "Mapping for CS2KZ", link: "/mapping/guidelines" },
       ],
     },
   ];

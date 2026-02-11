@@ -1,33 +1,14 @@
 <div style="text-align: center;">
-  <img src="/kzmapping.png" alt="Mapping Guidelines" style="max-width: 700px; display: block; margin: 0 auto 20px;">
+  <img src="/kzmapping.png" alt="Mapping" style="max-width: 700px; display: block; margin: 0 auto 20px;">
 </div>
 
-# Mapping Guidelines
+# Mapping for CS2KZ
 
 The aim of this document is to help guide new and experienced mappers towards improving the quality of their CS2KZ maps in preparation for global map approval. Following this guide will provide insight and resolutions to issues that may prevent your map from being approved. This document is written under the assumption that you have previous experience using the Hammer map editor.
 
+## Design
 
-## Meshes
-
-In Source 2, the world and its objects are ``mesh`` based. This differs from Source 1's brush system whereby the world is built with "blocks". The new mesh based system offers a far more intuitive approach to building your map however will require some background research if you're coming from Source 1. It is highly recommended that you move towards this new system if you haven't already since many optimisation issues previously manageable within Source 1 will not work the same way and can lead to later visual issues under Source 2's mesh based system.
-
-> [!WARNING]
-> When working with a mesh work you may encounter red edges. This means you have 'bad' faces.
->
->Right click a nearby face and "Remove Bad Faces" to resolve.
-
-<div style="text-align: center;">
-  <img src="/badfaces.png" alt="Bad faces" style="max-width: 400px; display: block; margin: 0 auto;">
-  <p style="margin: 10px 0;"><em>1. Bad faces caused by improper mesh work.</em></p>
-</div>
-
-[Source 2 101 - Hammer Crash Course #1 : Good workflow habits](https://www.youtube.com/watch?v=pdSDojRatHw), by Eagle One Development Team
-
-[Counter-Strike 2 Hammer - Wall niches / doors / windows / tunnels](https://www.youtube.com/watch?v=Bo1LwsCqp_M), by ReDMooNTV
-
-## Design/Detailing
-
-To secure a spot in the ``Global Map pool``, your map requires functional gameplay and a level of visual polish that goes beyond the basics. Maps that consist of "box rooms" with flat textures tiled across large surfaces are typically rejected, as they lack the environmental depth expected for global standards.
+To secure a spot in the Global Map pool, your map requires functional gameplay and a level of visual polish that goes beyond the basics. Maps that consist of "box rooms" with flat textures tiled across large surfaces are typically rejected, as they lack the environmental depth expected for global standards.
 
 Break up large empty spaces by introducing geometry which disrupts the room's silhouette. Adding structural elements such as pillars, recessed wall panels, or trim where surfaces meet can create natural highlights and shadows, transforming a hollow shell into a lively space.
 
@@ -44,13 +25,34 @@ Avoid employing a "jumps along a wall" design where the player simply follows a 
   </div>
 </div>
 
+
+## Meshes
+
+In Source 2, the world and its objects are mesh based. This differs from Source 1's brush system whereby the world is built with "blocks". The new mesh based system offers a far more intuitive approach to building your map however will require some background research if you're coming from Source 1. It is highly recommended that you move towards this new system if you haven't already since many optimisation issues previously manageable within Source 1 will not work the same way and can lead to later visual issues under Source 2's mesh based system.
+
+> [!WARNING]
+> - When working with a mesh work you may encounter red edges. This means you have "bad" faces. Right click a nearby face and ``Remove Bad Faces`` to resolve.
+
+<div style="text-align: center;">
+  <img src="/badfaces.png" alt="Bad faces" style="max-width: 400px; display: block; margin: 0 auto;">
+  <p style="margin: 10px 0;"><em>1. Bad faces caused by improper mesh work.</em></p>
+</div>
+
+
+### Learn more:
+
+[Source 2 101 - Hammer Crash Course #1 : Good workflow habits](https://www.youtube.com/watch?v=pdSDojRatHw), by Eagle One Development Team
+
+[Counter-Strike 2 Hammer - Wall niches / doors / windows / tunnels](https://www.youtube.com/watch?v=Bo1LwsCqp_M), by ReDMooNTV
+
+
 ## Lighting
 
 Lighting helps to build an atmospheric and immersive world, it also plays a major role in the readability of your map. While the context changes from map to map, generally speaking this means that your lighting should strike a balance between being visually appealing and readable for gameplay. 
 
-`light_environment` for sunlight will in most cases provide adequate lighting, however it's worth trying different angles, brightness and colour for the light to see what looks the best.
+[`light_environment`](https://developer.valvesoftware.com/wiki/Light_environment_(Source_2)) for sunlight will in most cases provide adequate lighting, however it's worth trying different angles, brightness and colour for the light to see what looks the best.
 
-In shaded areas of your map, it may be necessary to incorporate a secondary light source to provide better visibility, however in doing so, it is recommended that the light is complimented by a source such as a candle or light bulb prop. The `light_omni2` entity is standard for generic light sources. For lamps or floodlights you can create shaped light cones with a `light_barn` entity. To create dynamic lighting effects, within the object properties, set the direct lighting type to 'dynamic' and set a 'style'.
+In shaded areas of your map, it may be necessary to incorporate a secondary light source to provide better visibility, however in doing so, it is recommended that the light is complimented by a source such as a candle or light bulb prop. The [`light_omni2`](https://developer.valvesoftware.com/wiki/Light_omni2) entity is standard for generic light sources. For more intrticate light shapes you can use a [`light_barn`](https://developer.valvesoftware.com/wiki/Light_barn) or [``light_rect``](https://developer.valvesoftware.com/wiki/Light_rect) entity. To create dynamic lighting effects, within the object properties, set the direct lighting type to 'dynamic' and set a 'style'.  can be used for square or larger areas.
 
 <div style="display: flex; gap: 5px;">
   <div style="flex: 1;">
@@ -65,17 +67,15 @@ In shaded areas of your map, it may be necessary to incorporate a secondary ligh
 
 Adjusting the luminosity/brightness/fade of your lights will help to make your lights more convincing. Only use light ranges higher than 1024 units sparingly as this can negatively impact fps and compile times.
 
-When testing your lights, changing your 3d view port to `GPU Reference Path Tracing` will provide a real time raytraced preview of the lighting and reflections of your map in Hammer. This will allow you to adjust your lights without compiling your map. With that said, `3d All Lighting` tends to present shadows more accurately.
+When testing your lights, changing your 3d view port to **GPU Reference Path Tracing** will provide a real time raytraced preview of the lighting and reflections of your map in Hammer. This will allow you to adjust your lights without compiling your map. With that said, **3d All Lighting** tends to present shadows more accurately.
 
 <div style="text-align: center;">
   <img src="/gpupathtracing.png" alt="GPUPathTracing" style="max-width: 400px; display: block; margin: 0 auto;">
-  <p style="margin: 10px 0;"><em>6. Enabling GPU Path Tracing.</em></p>
+  <p style="margin: 10px 0;"><em>6. Enabling GPU Path Tracing in the viewport.</em></p>
 </div>
 
 > [!WARNING]
-> (mostly) Non merged edges can shine/bleed light through non-existent gaps.
-> 
-> Shadow bleed is also a thing to keep in mind.
+> Light and shadows may occasionally bleed through both merged and unmerged edges
 
 <div style="text-align: center;">
   <img src="/lightbleed.png" alt="Light bleed" style="max-width: 400px; display: block; margin: 0 auto;">
@@ -84,72 +84,73 @@ When testing your lights, changing your 3d view port to `GPU Reference Path Trac
 
 
 ### Lightmap Resolution and Lightmap Space
-The lightmap resolution of your map can have a significant impact on the outcome of your map’s lighting. Best practice is to always do a final compile for your map which by default is set to 2048 resolution. Below this resolution you are more likely to encounter lighting artifacts, especially in darker areas of the map. In larger maps with more light space it may be necessary to compile your map at a lightmap resolution higher than 2048.
+The lightmap resolution of your map can have a significant impact on the outcome of your map’s lighting. Best practice is to always do a **final compile** for your map which by default is set to 2048 resolution. Below this resolution you are more likely to encounter lighting artifacts, especially in darker areas of the map. In larger maps with more light space it may be necessary to compile your map at a lightmap resolution higher than 2048.
 
 <div style="text-align: center;">
   <img src="/lightartifacting.jpg" alt="Artifacting" style="max-width: 600px; display: block; margin: 0 auto;">
   <p style="margin: 10px 0;"><em>8. Lighting artifacts due to low lightmap resolution</em></p>
 </div>
 
-With this in mind you also want to avoid calculating lighting for areas of the map never visible to the player. The first step in achieving this is to cull lightmap space from your map by deleting unnecessary faces. Any face that will never be visible to the player should be deleted (assuming it is not contributing to vis). The second step is to incorporate a lightmap playerspace mesh. This is a brush material which tells the engine where to calculate high resolution lightmap space and will tell the engine where lightmap space should be prioritised.
+With this in mind you also want to avoid calculating lighting for areas of the map never visible to the player. The first step in achieving this is to cull lightmap space from your map by deleting unnecessary faces. Any face that will never be visible to the player should be deleted (assuming it is not contributing to vis). The second step is to incorporate a mesh with the ``toolslightmapres`` material. This is a [tool material](https://developer.valvesoftware.com/wiki/Tool_textures_(Source_2)) which tells the engine where to calculate high resolution lightmap space and will tell the engine where lightmap space should be prioritised.
 
 > [!WARNING]
->- Visible edges/lines on a surface.
 >
->- Especially common on lower light resolution compiles with simple surface materials
+> Unexpected edges or lines on a surface, discoloured textures and shadows without visible sources may indicate that a higher lightmap resolution is required.
 
 <div style="text-align: center;">
   <img src="/lines.png" alt="VisibleEdges" style="max-width: 400px; display: block; margin: 0 auto;">
   <p style="margin: 10px 0;"><em>9. Edge on a surface clearly visible.</em></p>
 </div>
 
+#### Learn more:
+
 [Counter-Strike 2 Hammer - Basic Map Optimisations (compile time)](https://youtu.be/VGxPXnGJ0wM?si=XKQLfUU9U4Ijs_fJ&t=135), by ReDMooNTV
 
 ### Light probes and cubemaps
-Light probes and cubemaps are required for your map and can be incorporated simultaneously with the `env_combined_light_probe_volume` entity. Light probes are required to create diffuse lighting on entities which cannot utilise direct lighting such as prop_dynamic entities. Cubemaps are required to create proper reflections for material surfaces and your view model (image 4 & 6). This is achieved by projecting a three dimensional image of a room onto the surfaces within the bounds of the entity.
+Light probes and cubemaps are required for your map and can be incorporated simultaneously with the [`env_combined_light_probe_volume`](https://developer.valvesoftware.com/wiki/Env_combined_light_probe_volume) *(ECLPV)* entity. Light probes are required to create diffuse lighting on entities which cannot utilise direct lighting such as [``prop_dynamic``](https://www.source2.wiki/Entities/prop_dynamic?_highlight=prop_dynamic&game=any) entities. Cubemaps are required to create proper reflections for material surfaces and your view model (image 4 & 6). This is achieved by projecting a three dimensional image of a room onto the surfaces within the bounds of the entity.
 
-<div style="display: flex; gap: 15px;">
+<div style="display: flex; gap: 5px;">
   <div style="flex: 1;">
-    <img src="/noprobe.jpg" alt="Present light probe" style="width: 100%; display: block;">
-    <p style="text-align: center; margin: 10px 0;"><em>10. Combined light probe absent</em></p>
+    <img src="/noprobe.jpg" alt="Present light probe" style="width: 80%; display: block;">
+    <p style="text-align: center; margin: 10px 0;"><em>10. ECLPV absent</em></p>
   </div>
   <div style="flex: 1;">
-    <img src="/almostprobe.jpg" alt="Absent light probe" style="width: 100%; display: block;">
-    <p style="text-align: center; margin: 10px 0;"><em>11. Combined light probe present, but improper edge fade</em></p>
+    <img src="/almostprobe.jpg" alt="Absent light probe" style="width: 80%; display: block;">
+    <p style="text-align: center; margin: 10px 0;"><em>11. ECLPV present, but improper edge fade</em></p>
   </div> 
   <div style="flex: 1;">
-    <img src="/yesprobe.jpg" alt="Absent light probe" style="width: 100%; display: block;">
-    <p style="text-align: center; margin: 10px 0;"><em>12. Combined light probe present</em></p>
+    <img src="/yesprobe.jpg" alt="Absent light probe" style="width: 80%; display: block;">
+    <p style="text-align: center; margin: 10px 0;"><em>12. ECLPV present</em></p>
   </div>
 </div>
 
-To implement lightprobes and cubemaps you should aim to place an `env_combined_light_probe_volume` in every room of your map. The origins of these entities should be positioned in the center of each room at player head height. You may need to adjust the position of the origin using the pivot manipulation tool (ins key). For example if the room has multiple elevations, raising the entity origin to a height between the floor and the ceiling may create more accurate reflections. If an object is obstructing the light probe, ensure that the origin is not placed within or halfway through that object. After determining the location for the origin of the entity, the bounds should be extruded to encapsulate the entirety of the room. Recompile and you should now see reflections on your weapon models and the surfaces of your map.
+To implement lightprobes and cubemaps you should aim to place an [`env_combined_light_probe_volume`](https://developer.valvesoftware.com/wiki/Env_combined_light_probe_volume) in every room of your map. The origins of these entities should be positioned in the center of each room at player head height. You may need to adjust the position of the origin using the pivot manipulation tool (Insert key). For example if the room has multiple elevations, raising the entity origin to a height between the floor and the ceiling may create more accurate reflections. If an object is obstructing the ECLPV, ensure that the origin is not placed within or halfway through that object. After determining the location for the origin of the entity, the bounds should be extruded to encapsulate the entirety of the room. Recompile and you should now see reflections on your weapon models and the surfaces of your map.
 
 
-In some instances a seam will appear between two volumes due to a difference between the lighting of each room. To soften the transition between the volumes, within the object properties assign an edge fade distance of 8 or 16 units (image 11). When applying edge fade, ensure the volume edges overlap by twice the distance of your edge fade distance to maintain a smooth blend (images 8, 9).  
+In some instances a seam will appear between two ECLPVs due to a difference between the lighting of each room. To soften the transition between the ECLPVs, within the object properties assign an edge fade distance of 8 or 16 units (image 11). When applying edge fade, ensure the ECLPV edges overlap by twice the distance of your edge fade distance to maintain a smooth blend (images 8, 9).  
 
-When placing combined light probes near walls, floors, or ceilings, extend the volume so the edge fade overlaps the surface. If the fade ends exactly at the wall, the lighting influence drops to zero, and the surface won't receive proper reflections or bounce light (image 5).
+When placing ECLPVs near walls, floors, or ceilings, extend the boundaries so the edge fade overlaps these surfaces. If the fade ends exactly at the wall, the lighting influence drops to zero, and the surface won't receive proper reflections or bounce light (image 5).
 
 <div style="text-align: center;">
   <img src="/lightprobe.png" alt="Artifacting" style="max-width: 600px; display: block; margin: 0 auto;">
-  <p style="margin: 10px 0;"><em>13. Combined light probe encapsulating the room with edge fade</em></p>
+  <p style="margin: 10px 0;"><em>13. ECLPV encapsulating the room with edge fade</em></p>
 </div>
 
 <div style="display: flex; gap: 15px;">
   <div style="flex: 1;">
     <img src="/nofade.gif" alt="Fade" style="width: 100%; display: block;">
-    <p style="text-align: center; margin: 10px 0;"><em>14. Combined light probe without fade or overlap</em></p>
+    <p style="text-align: center; margin: 10px 0;"><em>14. ECLPV without fade or overlap</em></p>
   </div>
   <div style="flex: 1;">
     <img src="/yesfade.gif" alt="No fade" style="width: 100%; display: block;">
-    <p style="text-align: center; margin: 10px 0;"><em>15. Combined light probe with fade and overlap</em></p>
+    <p style="text-align: center; margin: 10px 0;"><em>15. ECLPV with fade and overlap</em></p>
   </div> 
 </div>
 
-Irregularly shaped rooms often force light probe volumes to overlap awkwardly through walls into adjacent spaces. This will occasionally cause surfaces to sample the wrong light probes. To fix this use the priority system to 'force' the correct probe to take precedent (image 11). Usually, you’ll want the probe that best fits the specific room's shape or lighting to have the higher priority. 
+Irregularly shaped rooms often force ECLPVs to overlap awkwardly through walls into adjacent spaces. This will occasionally cause surfaces to sample the wrong ECLPVs. To fix this use the priority system to "force" the correct ECLPV to take precedent (image 11). Usually, you’ll want the ECLPV that best fits the specific room's shape or lighting to have the higher priority. 
 
 > [!NOTE]
-> - When two or more volumes are set to the same priority, the engine will determine the priority based on the hierachy of the entity id.
+> - When two or more env_combined_light_probe_volumes are set to the same priority, the engine will determine the priority based on the hierachy of the entity id.
 >
 > - Having multiple env_combined_light_probe_volume entities with custom “cubemap texture” can be buggy. Try changing the priority settings.
 >
@@ -166,9 +167,9 @@ Irregularly shaped rooms often force light probe volumes to overlap awkwardly th
 </div> 
 
 > [!WARNING]
->- ``env_combined_light_probe_volume`` can sometimes break.
+>- ``env_combined_light_probe_volume`` can sometimes break. Try recompiling the map or replacing combined light probes until it works again.
 >
-> - Try recompiling the map or replacing combined light probes until it works again.
+>- Do not rotate env_combined_light_probe_volumes (TEST!!!!!)
 
 <div style="text-align: center;">
   <img src="/buglightprobe.png" alt="BuggedLightprobe" style="max-width: 400px; display: block; margin: 0 auto;">
@@ -177,30 +178,29 @@ Irregularly shaped rooms often force light probe volumes to overlap awkwardly th
 
 ## VIS
 
-The primary function of VIS is to determine what is visible to the player from any given position. If an object is a non-vis contributor, the engine will still render everything behind it, which can severely impact performance. To prevent this, structural geometry such as walls, floors and ceilings should be kept as vis contributors.
+The primary function of VIS (visibility) is to determine what is visible to the player from any given position. This is calculated during the map's compilation phase and, along with lighting, is one of the most resource intensive parts of the process. Poor optimization can cause compile times to skyrocket. 
 
-VIS is calculated during the map's compilation phase and, along with lighting, is one of the most resource-intensive parts of the process. Poor optimization can cause compile times to skyrocket. VIS functions most efficiently with simple "boxes" and straight surfaces. Adding more complex geometry inside a room will therefore hinder this process. Detailed elements should be separate objects set as non-vis contributors ( Image 20).
+In Source 1, visibility was managed by converting geometry into [`func_detail`](https://developer.valvesoftware.com/wiki/Func_detail). Source 2 follows a similar logic, but the workflow depends on the asset type. While props are non-VIS contributors by default, mesh objects must be manually configured. To prevent a mesh from affecting VIS, you must enable the `Not a Vis Contributor` setting within the object properties. Note, if an object is a non-VIS contributor the engine will still render everything behind it which can severely impact performance. To prevent this, structural geometry such as walls, floors and ceilings should be kept as vis contributors.
+<div style="text-align: center;">
+  <img src="/nonvis.png" alt="nonvis" style="max-width: 400px; display: block; margin: 0 auto;">
+  <p style="margin: 10px 0;"><em>20. Object properties</em></p>
+</div> 
+
+VIS functions most efficiently with simple "boxes" and straight surfaces. Adding more complex geometry inside a room will therefore hinder this process. Detailed elements should be separate objects set as non-VIS contributors (image 20).
 
 In technical terms, VIS operates using cubes called voxels. These voxels fill the playable space, "communicating" with one another to determine line-of-sight and visibility.
 
-If these voxels are too large or extend into the "void" (the empty space outside your map's sealed geometry), it will cause a VIS Leak. When a leak occurs, the engine fails to distinguish between the inside and outside of the map, often resulting in objects rendering when they shouldn't. Ensure your outer structural hull is perfectly sealed to keep the voxel calculation contained.
+If these voxels are too large or extend into other rooms or the [void](https://developer.valvesoftware.com/wiki/Void) (the empty space outside your map's sealed geometry), it will cause a VIS Leak. When a leak occurs, the engine fails to distinguish between the inside and outside of a room, often resulting in objects rendering when they shouldn't. Ensure your outer "shell" is perfectly sealed to keep the voxel calculation contained.
 
-The entity `visibility_hint` allows you to manually control the size of these voxels in specific areas. While using larger voxels can significantly reduce your compile times, you must be careful, if they are too large, they may fail to properly respect your map's boundaries and bleed into the void, resulting in a VIS leak. Larger open maps such as infinite water maps can use higher voxel sizes.
+The entity [`visibility_hint`](https://developer.valvesoftware.com/wiki/Visibility_hint) allows you to manually control the size of these voxels in specific areas. While using larger voxels can significantly reduce your compile times, you must be careful, if they are too large, they may fail to properly respect your map's boundaries and bleed into other rooms or the void, resulting in a VIS leak. Larger, open maps such as infinite water maps can use higher voxel sizes.
 
-To visualize how the engine is "thinking," you can view these voxels directly in Hammer. Navigate to the Map dropdown menu and select `Load Compiled Vis Data`. This will overlay the voxel grid and vis clusters onto your 3D view, allowing you to identify areas where the density might be too high or where voxels might be bleeding toward the void.
+To visualize how the engine is "thinking," you can view these voxels directly in Hammer. Navigate to the _Map_ dropdown menu and select `Load Compiled Vis Data`. This will overlay the voxels clusters onto your 3D view, allowing you to identify areas where the density might be too high or where voxels might be leaking.
 
-To visualize which objects in your map are currently affecting visibility, click the "Visibility contributors view" button located in the toolbar (see image below).
+To visualize which objects in your map are currently affecting visibility, click the ``Visibility contributors view`` button located in the toolbar (see image below).
 
 <div style="text-align: center;">
   <img src="/viewviscontribs.png" alt="viscontribs" style="max-width: 60px; display: block; margin: 0 auto;">
   <p style="margin: 10px 0;"><em>19. "Visibility contributors view" button</em></p>
-</div> 
-
-In Source 1, visibility was managed by converting geometry into `func_detail`. Source 2 follows a similar logic, but the workflow depends on the asset type. While props are non-vis contributors by default, mesh objects must be manually configured. To prevent a mesh from affecting visibility, you must enable the `Not a Vis Contributor` setting within the object properties.
-
-<div style="text-align: center;">
-  <img src="/nonvis.png" alt="nonvis" style="max-width: 400px; display: block; margin: 0 auto;">
-  <p style="margin: 10px 0;"><em>20. Object properties</em></p>
 </div> 
 
 <div style="display: flex; gap: 15px;">
@@ -210,7 +210,7 @@ In Source 1, visibility was managed by converting geometry into `func_detail`. S
   </div>
   <div style="flex: 1;">
     <img src="/kuutionovis.jpg" alt="CMAA2" style="width: 100%; display: block;">
-    <p style="text-align: center; margin: 10px 0;"><em>22. kz_kuutio with only vis contributors</em></p>
+    <p style="text-align: center; margin: 10px 0;"><em>22. kz_kuutio with only VIS contributors</em></p>
   </div> 
 </div>
 
@@ -221,18 +221,25 @@ In Source 1, visibility was managed by converting geometry into `func_detail`. S
 > [!WARNING]
 > Unlike Source 1 the ``toolsskybox`` material does not occlude objects outside the world mesh. If required you will need to create a new material with the ``Moondome shader`` using the same skybox texture as your ``env_sky`` entity.
 
+### Learn more:
+
 [Counter-Strike 2 Hammer - Basic Map Optimisations (compile time)](https://www.youtube.com/watch?v=VGxPXnGJ0wM), by ReDMooNTV
 
 [CS2 Mapping Academy #10 - VIS Optimization (Counter Strike 2)](https://www.youtube.com/watch?v=XLT2b0Ej8DM), by Eagle One Development Team
 
+[Visibility](https://developer.valvesoftware.com/wiki/Source_2/Docs/Level_Design/Visibility), by Valve Developer Community
+
 ## Texturing
 
-Textures can turn raw-geometry into a living breathing world. Fortunately making your own textures is easier than ever with Source 2 offering far more intuitive and complex texture manipulation. This provides you with an opportunity to develop a unique style which will make your map stand out from others.
+Textures can turn raw geometry into a living breathing world. Fortunately making your own textures is easier than ever with Source 2 offering far more intuitive and complex texture manipulation. This provides you with an opportunity to develop a unique style which will make your map stand out from others.
 
-While there are no standards for the aesthetic of your map, there is an expectation that your textures should not impact visibility and maintain a degree cohesion. Try to keep a consistent resolution for each texture where possible, align patterned materials with adjacent patterned materials, and ensure surfaces adopt their expected properties (walking on grass should sound like grass).  
+While there are no standards for the aesthetic of your map, there is an expectation that your textures should not impact visibility and maintain a degree of cohesion. Try to keep a consistent resolution for each texture where possible, align patterned materials with adjacent patterned materials, and ensure surfaces adopt their expected properties (walking on grass should sound like grass).  
 
 ### Custom Texturing and Materials
-Custom textures and materials can be added to your addon using the material editor. To add a new texture/material you will need to create a new .vmat file. To create a .vmat file simply open the material editor, press new and save the file within “csgo_addons/your_addon/materials/”. You must save the file before you can edit it! 
+Custom textures and materials can be added to your addon using the material editor. To add a new texture/material you will need to create a new ``.vmat`` file. To create a ``.vmat`` file simply open the material editor, press new and save the file within ``csgo_addons/your_addon/materials/``.
+
+>[!NOTE]
+>You must save the file before you can edit it!
 
 The list of properties to choose from will vary depending on the shader type you choose. If you wish to change the shader you can do so and re-save that vmat without having to create a new one.
 
@@ -251,30 +258,32 @@ Most material properties update in real time. This means you can adjust your mat
   <p style="margin: 10px 0;"><em>27. Crashed game caused by missing material.</em></p>
 </div>
 
+#### Learn more:
+
 [Counter-Strike 2 Hammer: Custom Textures / Materials (PNG images)](https://www.youtube.com/watch?v=1T-a3qfN_2c), by ReDMooNTV
 
 ### Useful shaders
 Material shaders are different customizable configurations for materials each with varying properties and functions. Here we have listed some of the more useful ones with tips on how to use them.
 
 
-- `Csgo Environment` 
+#### `Csgo Environment` 
 
 This shader allows **PBR** layering for generic materials such as wall, floor and terrain surfaces.
 
-Although only a colour/texture file is required for the shader to function, you should aim to generate normal and roughness maps at a minimum to provide your materials with realistic topography and surface reflectivity.
+Although only a colour/texture file is required for the shader to function, you should aim to generate **normal** and **roughness** maps at a minimum to provide your materials with realistic topography and surface reflectivity.
 
 If you’re planning to use a material texture which lacks other PBR layers, you can generate them yourself. For those who want fast results you can quickly generate these layers from a colour/diffuse texture using [NormalMap Online](https://cpetry.github.io/NormalMap-Online/) or [Materialize](https://github.com/maikramer/Materialize).
 
 You can also generate the layers manually using an appropriate photo editing software such as Gimp, Photoshop or Blender.
 
-- `Csgo Environment Blend` 
+#### `Csgo Environment Blend` 
 
-The environment blend shader allows you to combine two materials and create smooth transitions between those materials with the texture paint tool. You can also add a wetness layer if you wish to create a blend between a wet and dry surface. To use blend materials, assign the custom blend material to a face, select that face and then change to the `blend painting tool` (shift+V). Within the tool settings, change 'paint on' to selected faces, then on the selected face you can click to paint. If you wish to switch to the alternate material, hold ctrl while painting.
+The `Csgo Environment Blend` shader allows you to combine two materials and create smooth transitions between those materials with the `Blend Painting Tool` (Shift+V). You can also add a wetness layer if you wish to create a blend between a wet and dry surface. To use blend materials, assign the custom blend material to a face, select that face and then change to the `Blend Painting Tool`. Within the tool settings, change "Paint On" to selected faces, then on the selected face you can click to paint. If you wish to switch to the alternate material, hold ctrl while painting.
 
 > [!NOTE]
-Increasing the subdivision on a face will allow finer strokes with the paint tool but may force uneven results for surfaces with complex geometry. As an alternative method, you can manually cut edges on the face to the shapes you desire and with the paint tool `flood fill`.
+Increasing the *subdivision* on a face will allow finer strokes with the paint tool but may force uneven results for surfaces with complex geometry. As an alternative method, you can manually cut edges on the face to the shapes you desire and with the paint tool `Flood Fill`.
 
-- `Csgo Water Fancy` 
+#### `Csgo Water Fancy` 
 
 If you don’t plan on adding water to your map you can ignore this shader.
 If you do, it is imperative that you create a custom water material rather than using the stock assets.
@@ -284,7 +293,7 @@ The easiest way to prepare a water material using this shader is to decompile a 
 Most people’s first issue when using stock water is that the surface starts to fade the further it is located from the world origin. To adjust the fade distance, change the UV max and minimum values.
 
 
-- `Csgo Complex` 
+#### `Csgo Complex` 
 
 The Csgo Complex shader offers experimental properties for your materials such as emissive lighting, transparency, animation and movement.
 
@@ -308,7 +317,7 @@ To make the glowing material appear as “glowing” (without as many problems) 
 
 Transparent materials can also be made with the Csgo Complex shader. Just tick the “Translucent” box and configure it. For this you will need an alpha mask.
 
-- `Csgo Static Overlay` 
+#### `Csgo Static Overlay` 
 
 Can be used to project materials onto faces. The best use case for this would be images/art/lj numbers. This shader does also have the translucent option. 
 
@@ -321,38 +330,38 @@ Well because faces tend to glitch out when viewed from further away, this doesn�
   <p style="margin: 10px 0;"><em>24. Overlay and face comparison</em></p>
 </div>
 
-- `Sky` 
+#### `Sky` 
 
 Used for making custom skybox material. The “Sky Texture” can be added in multiple different forms. The preferred and best looking one is as an .exr file with HDR. This will however use the most file size.
 
 The Dxt1 (LDR) option can be used if the skybox image isn't HDR. This option uses less file size. Use this option if your skybox is a simple .png image.
 EXPLAIN WHAT CUBEMAP TEXTURE IS AND HOW TO GET/MAKE THEM
 
-- `Csgo Moondome` 
+#### `Csgo Moondome` 
 
 Moondomes are used because toolsskybox doesn’t work properly and renders things behind it. Moondomes are basically a material shader that acts like a proper skybox material. Keep in mind that it has collision on by default but this can be fixed by changing the “Surface Property” to “Default Silent” from “Default” in the “Attributes” tab. This makes the moondome act like a clip by not leaving gunshot dents but still acting like a wall that can’t be passed.
 
 When making moondomes it’s important to keep in mind that the “Color” setting is set to a grey colour which should be made white to not have the moondome darker than the skybox. Then choose the skybox “Cube Map” texture and you're done.
 
-- `Refract` 
+#### `Refract` 
 
 It's broken as this is being written. Has to be rendered as a model through a “info_particle_system” entity. 
 
 Needs “FidelityFX Super Resolution” video setting disabled to show without visual bugs.
 
-- `Csgo Weapon` 
+#### `Csgo Weapon` 
 
 Can be used to make very interesting materials by enabling the SFX options “Glitter” and “Iridescence”. This shader does in fact work on other surfaces than weapons.
 
-- `Csgo Simple 3layer Parallax` 
+#### `Csgo Simple 3layer Parallax` 
 
 Can be used to make fake rooms and layered materials such as ice. Check out [this](https://www.youtube.com/watch?v=6ZgSIaJoe8g) video to learn more. 
 
-- `Csgo Composite Generic` 
+#### `Csgo Composite Generic` 
 
 Used for loading screen images. The option A is the only one needed.
 
-- `Csgo Lightmappedgeneric` 
+#### `Csgo Lightmappedgeneric` 
 
 Coming from Source 1 you may have used the lightmapped generic shader for your generic materials. While this shader is still available in Source 2, it should only be used sparingly as it lacks many of the features and fidelity offered by alternative shaders.
 
@@ -369,11 +378,13 @@ The particle editor has to be enabled manually, follow [this](https://developer.
 
 ## Sounds
 
-[Encoding txt](https://www.source2.wiki/CommunityGuides/encodingtxt?game=any)
+
 
 - Wav, mp3
 
 - Loop (wav looping with for example wavosaur) 
+#### Learn more:
+[Encoding txt](https://www.source2.wiki/CommunityGuides/encodingtxt?game=any)
 
 [Counter Strike 2 Audio Academy](https://www.youtube.com/watch?v=6BqNhaPDi48&list=PLHSLq5FjjRw2zPKya7QVp62XPvQUu9k-O), by Eagle One Development Team
 
@@ -415,7 +426,7 @@ The particle editor has to be enabled manually, follow [this](https://developer.
 
     - Adding a backface at the problematic location.
 
-      - If this is done, it's wise to change the `lightmap resolution bias` to -4 and perhaps disabling `vis contributor` on those faces as they aren't meant to be seen.
+      - If this is done, it's wise to change the `lightmap resolution bias` to -4 and perhaps disabling `VIS contributor` on those faces as they aren't meant to be seen.
 
     - Remove the shadow property of the problematic face.
 
@@ -437,7 +448,7 @@ The particle editor has to be enabled manually, follow [this](https://developer.
 
 ### 5. Having multiple .vpk packed ends with the user loading into the alphabetically first .vpk.
 
-### 6. Purple checkers is often a sign of missing assets.
+### 6. Purple checkers are often a sign of missing assets.
 
 <div style="text-align: center;">
   <img src="/postprocessingbug.gif" alt="Broken post_processing_volume" style="max-width: 400px; display: block; margin: 0 auto;">
@@ -464,6 +475,8 @@ The particle editor has to be enabled manually, follow [this](https://developer.
   <img src="/loadingscreen.png" alt="Loading screen" style="max-width: 400px; display: block; margin: 0 auto;">
   <p style="margin: 10px 0;"><em>28. Custom loading screen.</em></p>
 </div>
+
+#### Learn more:
 
 [CS2 Loading Screen Creator](https://github.com/jakkekz/cs2-loading-screen-stuff), by jakke
 
@@ -512,7 +525,9 @@ The particle editor has to be enabled manually, follow [this](https://developer.
 >
 >* **IT IS RECOMMENDED TO BACK UP YOUR ADDONS FOLDER BEFORE TRYING THIS.**
 
+### 5. Decompiling maps
 
+* Especially on larger maps, scroll through the nodes in the material browser before opening the ``.vmap`` to prevent crashes.
 
 ## Useful Resources
 
@@ -622,3 +637,20 @@ If this is done, remember to set this lightprobes priority lower than other, oth
     - Add ``gradient.png`` as the translucent layer.
   - Enable ``Self Illum`` if you want it glowing.
   - Can be left white in the material editor and color it in the object properties per case use.
+
+## Authors
+
+_Thank you for visiting_,
+
+<div style="display: flex; gap: 5px;">
+  <div style="flex: 1; text-align: center;">
+    <img src="/jimi.png" alt="jimi" style="max-width: 350px; display: block; margin: 0 auto;">
+    <p style="margin: 10px 0;"><em><a href="https://steamcommunity.com/id/Pierre_Bourne/">jakke</a></em></p>
+  </div>
+  <div style="flex: 1; text-align: center;">
+    <img src="/grom.png" alt="grom" style="max-width: 350px; display: block; margin: 0 auto;">
+    <p style="margin: 10px 0;"><em><a href="https://steamcommunity.com/id/leetly">leetly</a></em></p>
+  </div>
+</div>
+
+  With support from the [CS2KZ mapping commmunity](https://discord.gg/R593VhE).
