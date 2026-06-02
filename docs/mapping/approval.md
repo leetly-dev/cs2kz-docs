@@ -9,15 +9,15 @@ The map approval process structure will closely resemble GOKZ with a few key det
 - After sufficient testing and adjustments have taken place, post your map to the **cs2-global-map-submission** channel on the [Kreedz Mapping Discord server](https://discord.gg/R593VhE).
 
 > [!NOTE]
-> - Maps which have not been posted to **new-maps** for testing will be instantly denied. If you do not recieve feedback in **new-maps** after two weeks, you may submit your map. However, any issues found during review may lead to your map being denied.  
+> - Maps which have not been posted to **new-maps** for testing will be instantly denied. If you do not receive feedback in **new-maps** after two weeks, you may submit your map. However, any issues found during review may lead to your map being denied.  
 > - A workshop link, descriptions of your course names and further details are required to be included with your submission. When posting your submission check the submission post guidelines beforehand to ensure your post meets every criteria.
 
 ## 2. Review
 
 - **The global map approval team**, a group of experienced KZ community members will review the map. They are responsible for evaluating the
-difficulty, ranking potential, and adherence to community standards for each course.
+difficulty, ranking potential and adherence to community standards for each course.
 - Maps will be assessed on objective metrics such as design, lighting, gameplay and difficulty.
-- The team will also consider whether the course is "reasonable to compete on," allowing for some flexibility and creative expression in map design.
+- The team will also consider whether the course is "reasonable to compete on" allowing for some flexibility and creative expression in map design.
 
 > [!NOTE]
 > - Each map approval team member will provide their own review for submitted maps. Sometimes one member may deny a map despite a majority voting for approval. In such circumstances the reasoning for denial is thoroughly reviewed and approval is determined by the map approval team leader.
@@ -27,7 +27,7 @@ difficulty, ranking potential, and adherence to community standards for each cou
 - If your map is denied, you are encouraged to resolve any issues determined by the map approval team, post your updates to **new-maps** for testing, and resubmit for the next map release.
 
 > [!WARNING]
-> - Given that CS2KZ is still undergoing development, the standards and guidelines for global maps are subject to occasional ammendments. 
+> - Given that CS2KZ is still undergoing development, the standards and guidelines for global maps are subject to occasional amendments. 
 
 ## 4. Approved maps
 

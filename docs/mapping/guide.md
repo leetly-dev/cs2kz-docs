@@ -55,7 +55,7 @@ Tier 2: Some multi-strafing required. May include rudimentary box-tech jumps, sh
 
 Tier 3: Entry level timing and precision. Expect longjumps up to ~250 units. Box-tech is slightly more difficult, bunny-hop sequences are both longer and harder with single hops being rare or relatively easy when incorporated. Introduction to more challenging slide ramps and ladder jumps.
 
-Tier 4: Good timing and precision is required for most jumps. Expect long jumps up to ~260 units. Bunny-hop sequences may be single-hop only but routing will still be relatively simple. Some blocks may be timed, or anti-bhop but are not too challenging. Slides require more precise entry/exits and may involve basic resurfs. Ladder jumps are expected. Some more niche techniques such as danvari, vesq tech and wallstrafing can be expected. Intermixed elements of gameplay sequences are introduced but are relatively simple.
+Tier 4: Good timing and precision is required for most jumps. Expect long jumps up to ~260 units. Bunny-hop sequences may be single-hop only but routing will still be relatively simple. Some blocks may be timed, or anti-bhop but are not too challenging. Slides require more precise entry/exits and may involve basic resurfs. Ladder jumps are expected. Some more niche techniques such as danvari tech, vesq tech and wallstrafing can be expected. Intermixed elements of gameplay sequences are introduced but are relatively simple.
 
 Tier 5: Proficiency in longjumping, bunny-hopping, sliding and ladders is required. Expect longjumps up to ~270 units. Various elements of gameplay are often intermixed. Bunny-hop sequences may be longer or more technical, with a majority of the blocks being single-hop only. Timed and anti-bhop blocks are frequently implemented to force a longjump or pre-keep. More technical slide and ladder gameplay is common and typically requires precision or strafing. Niche tech is more frequent and challenging. 
 
@@ -75,21 +75,21 @@ Tier 1: Should be doable by a player who was just taught how to move in game. Mi
 
 Tier 2: Most basic air strafing, bhopping, surfing, ladders, and corners. Knowledge of CJ (i.e has knowledge of air strafing).
 
-Tier 3: Starts to require more advanced understanding of T2 techs. LJs up to 235 block (i.e difficulty of window to cat on mirage). Techs such as pre keeping, HSW, and VESQ are required. No more than 235 LJ block.
+Tier 3: Starts to require more advanced understanding of T2 techs. LJs up to 235 block (i.e difficulty of window to cat on mirage). Techs such as pre keeping, HSW, and vesq tech are required. No more than 235 LJ block.
 
-Tier 4: Starts requiring harder techs such as basic JBs (90* & 180*), walking bhop blocks, ladder glide, danvari, and more proficient in all previous techs. No more than 241 block LJ.
+Tier 4: Starts requiring harder techs such as basic JBs (90* & 180*), walking bhop blocks, ladder glide, danvari tech, and more proficient in all previous techs. No more than 241 block LJ.
 
 Tier 5: Requires players to start spending a bit more time trying. Better execution of previous techs, 241 LJ block max, advanced turning knowledge, harder bhops.
 
-Tier 6: Binds starting to be considered, player needs very good knowledge and execution of all techs
+Tier 6: Binds starting to be considered, player needs very good knowledge and execution of all techs.
 
 Tier 7: The hardest VNL techs combined with strafey jumps or very weird pre-keep.
 
-Tier 8: Reaching close to the limits of what is doable by humans. Player requires world record level skill and flawless execution of ALL VNL techs.
+Tier 8: Reaching close to the limits of what is doable by humans. Player requires world record level skill and flawless execution of all VNL techs.
 
-Tier 9: Unfeasible. Technically possible but a human will likely not be able to do it (e.g kz_saishuu PRO)
+Tier 9: Unfeasible. Technically possible but a human will likely not be able to do it (e.g kz_saishuu PRO).
 
-Tier 10: Impossible. Beyond what is possible with the current game mechanics (e.g surfing to gain height or LJ'ing 260 block)
+Tier 10: Impossible. Beyond what is possible with the current game mechanics (e.g surfing to gain height or LJ'ing 260 block).
 
 #### Learn more:
 [VNL Map Running Spreadsheet](https://bit.ly/vnltiers), by Global Map Coverage
@@ -168,6 +168,7 @@ With this in mind you also want to avoid calculating lighting for areas of the m
 
 > [!WARNING]
 > - Unexpected edges or lines on a surface, discolored textures and shadows without visible sources may indicate that a higher lightmap resolution is required.
+> - Lightmap artifacts are more frequent following the Cache update (even within Valve's own maps).
 
 <div style="text-align: center;">
   <img src="/mapping/lines.png" alt="VisibleEdges" style="max-width: 400px; display: block; margin: 0 auto;">
@@ -486,7 +487,7 @@ Coming from Source 1 you may have used the ``LightmappedGeneric`` shader for you
 
 Particle effects such as fire, water ripples and dust motes can be added to your map with an ``info_particle_system`` entity. While some stock particle systems are available, many will require tweaking within the particle editor to function. 
 
-By default the particle editor is soft locked for fresh installations of Hammer. The CS2KZ mapping api enables the particle editor. If you are not using the mapping API follow [this](https://developer.valvesoftware.com/wiki/Counter-Strike_2_Workshop_Tools/Particles) tutorial to enable the particle editor. 
+By default the particle editor is soft locked for fresh installations of Hammer. The CS2KZ Mapping api enables the particle editor. If you are not using the Mapping API follow [this](https://developer.valvesoftware.com/wiki/Counter-Strike_2_Workshop_Tools/Particles) tutorial to enable the particle editor. 
 
 If you're interested in learning more about particle systems, we recommend decompiling a Valve particle system or custom asset and exploring its properties within the particle editor.
 
@@ -502,7 +503,7 @@ Good luck! Sounds are notoriously difficult to implement at the moment.
 >[!WARNING]
 >- Despite what some tutorials have suggested, the ambient_generic entity still functions.
 >- Spawning inside of an env_soundscape will not activate the soundscape. You can resolve this issue by moving the env_soundscape radius slightly ahead of the player spawn point. 
->- Looped soundevents will deactivate if the player leaves the audible radius. To resolve, either increase the radius or have a trigger restart the sound within the audible range
+>- Looped soundevents will deactivate if the player leaves the audible radius. To resolve, either increase the radius or have a trigger restart the sound within the audible range.
 >- Sounds which are triggered outside of the audible radius will immediately stop playing on dedicated servers.
 >- On dedicated servers when a trigger is employed to play a sound from an ambient_generic entity, if the trigger object is triggered more than once, the sound will stop and become unplayable for the rest of the game session.       
 
@@ -638,7 +639,7 @@ Due to latency, slide trigger meshes should be larger than the associated blocks
 
 ### 3. Func_brush tends to act weirdly.
 
-Do not use. Ported maps may have these.
+Use with caution. Some porting tools improperly convert func_brush entities into invalid geometry leading to extremely long or impossible compilation times.
 
 ### 4. Having multiple .vpk files packed
 
