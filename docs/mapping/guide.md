@@ -73,7 +73,7 @@ Tier 10: Impossible, even with absolutely perfect input and technique (effective
 
 Tier 1: Should be doable by a player who was just taught how to move in game. Minimal turning and no crouch jumps (i.e knows how to go from the base of xbox to short on de_dust2 and knows how to climb a ladder).
 
-Tier 2: Most basic air strafing, bhopping, surfing, ladders, and corners. Knowledge of CJ (i.e has knowledge of air strafing).
+Tier 2: Most basic air strafing, bhopping, surfing, ladders, and corners. Knowledge of CJ.
 
 Tier 3: Starts to require more advanced understanding of T2 techs. LJs up to 235 block (i.e difficulty of window to cat on mirage). Techs such as pre keeping, HSW, and vesq tech are required. No more than 235 LJ block.
 
