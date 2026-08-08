@@ -6,7 +6,7 @@ The map approval process structure will closely resemble GOKZ with a few key det
 
 - Upload your map to the [CS2 Steam Workshop](https://steamcommunity.com/app/730/workshop).
 - Post your map in the **New Maps** category on the [Global KZ Forum](https://forum.global-kz.net) for testing.
-- After sufficient testing and adjustments have taken place, submit your map via the [CS2KZ Global Submission Portal](https://cs2kz-submissions.pages.dev).
+- After sufficient testing and adjustments have taken place, submit your map via the [CS2KZ Global Submission Portal](https://submissions.cs2kz.org/).
 
 > [!NOTE]
 > - Maps which have not been posted to **New Maps** for testing will be instantly denied. If you do not receive feedback in **New Maps** after two weeks, you may submit your map. However, any issues found during review may lead to your map being denied.
